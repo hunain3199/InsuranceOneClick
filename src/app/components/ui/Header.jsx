@@ -39,6 +39,7 @@ function Header() {
   const dropsLink = [
     { href: "/insurance/auto", label: "Auto" },
     { href: "/insurance/bike", label: "Bike" },
+    { href: "/insurance/commercial", label: "Commercial" },
     { href: "/health", label: "Health" },
     { href: "/family", label: "Family" },
     { href: "/travel", label: "Travel" },

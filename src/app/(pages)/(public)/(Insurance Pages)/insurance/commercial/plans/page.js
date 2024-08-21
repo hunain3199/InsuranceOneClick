@@ -8,7 +8,7 @@ const page = () => {
     <div className=" p-[30px] bg-customBlue">
       <Details />
       <Accordian />
-     <Caraosal />
+      <Caraosal />
     </div>
   );
 };

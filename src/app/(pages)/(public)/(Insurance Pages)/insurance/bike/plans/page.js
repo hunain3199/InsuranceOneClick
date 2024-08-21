@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Accordian from "@/app/components/plans/Accordian/Accordian";
 import Details from "@/app/components/plans/Details";
 import Call from "@/app/components/plans/Call";
+import Plains from "@/app/components/ui/Plain";
+import Caraosal from "@/app/components/ui/Caraosal";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -45,6 +47,7 @@ const Page = () => {
         <p>Loading...</p>
       )}
       <Call />
+      <Caraosal />
     </div>
   );
 };

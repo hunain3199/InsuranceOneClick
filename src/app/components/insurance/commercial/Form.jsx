@@ -30,7 +30,7 @@ function Form() {
   const onSubmit = async (data) => {
     console.log(data);
     methods.reset(); // Reset form after submission
-    router.replace("/insurance/auto/plans"); // Navigate to the plans page
+    router.replace("/insurance/commercial/plans"); // Navigate to the plans page
   };
 
   const carBrand = [

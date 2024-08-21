@@ -7,6 +7,7 @@ import Form from "../plans/Accordian/Form";
 import Call from "../plans/Call";
 import Link from "next/link";
 import Image from "next/image";
+import Caraosal from "../ui/Caraosal";
 
 const Accordian = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,6 +107,8 @@ const Accordian = () => {
         </>
       </div>
       <Call />
+     
+      
     </div>
   );
 };
