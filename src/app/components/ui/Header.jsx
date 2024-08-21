@@ -218,14 +218,18 @@ function Header() {
                               </details>
                             </li>
 
-                            {navLinks.map((links) => (
+                            {navLinks.map((links,i) => (
                               <>
+                              <div key={i}>
                                 <Link
+                                  
                                   href={links.href}
+                                  
                                   className="block hover:text-blue-500"
                                 >
                                   {links.label}
                                 </Link>
+                                </div>
                               </>
                             ))}
                           </ul>

@@ -1,5 +1,5 @@
 "use client";
-
+import { Suspense } from 'react';
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Accordian from "@/app/components/plans/Accordian/Accordian";
@@ -31,6 +31,7 @@ const Page = () => {
   }, [bikeInsuranceObject]);
 
   return (
+    <Suspense >
     <div className="p-[30px] bg-customBlue">
       <Details />
 
@@ -49,6 +50,7 @@ const Page = () => {
       <Call />
       <Caraosal />
     </div>
+    </Suspense >
   );
 };
 
