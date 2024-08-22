@@ -44,8 +44,8 @@ function Header() {
     { href: "/family", label: "Family" },
     { href: "/travel", label: "Travel" },
     { href: "/life", label: "Life" },
-    { href: "/home", label: "Home" },
-    { href: "/tracker", label: "Tracker" },
+    { href: "/general", label: "General" },
+    
   ];
   const navLinks = [
     { href: "/about", label: "About" },
