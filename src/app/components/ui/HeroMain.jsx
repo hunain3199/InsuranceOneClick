@@ -10,6 +10,7 @@ import Tracker from "@public/assets/Hero/tracker.svg";
 import Bike from "@public/assets/Hero/bike.svg";
 import Life from "@public/assets/Hero/life.svg";
 import "@/app/globals.css";
+import Link from "next/link";
 import IconCard from "../Reauseable/IconCard";
 const HeroMain = () => {
   return (
@@ -35,9 +36,9 @@ const HeroMain = () => {
                 {/* Tracker  */}
                 <IconCard src={Tracker} alt="tracker_icon" title="Tracker" />
                 {/* Auto */}
-                <IconCard src={Auto} alt="auto_icon" title="Auto" />
+                <Link href={"/insurance/auto"}><IconCard src={Auto} alt="auto_icon" title="Auto" /></Link>
                 {/* Bike  */}
-                <IconCard src={Bike} alt="bike_icon" title="Bike" />
+               <Link href={"/insurance/bike"}><IconCard src={Bike} alt="bike_icon" title="Bike" /></Link> 
                 {/* Health */}
                 <IconCard src={Health} alt="health_icon" title="Health" />
               </div>
