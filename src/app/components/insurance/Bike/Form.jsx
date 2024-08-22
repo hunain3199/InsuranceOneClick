@@ -50,7 +50,7 @@ const Form = () => {
       };
       try {
         const response = await axios.post(
-          "https://oneclick-server.onrender.com/api/v1/insurance/bike-insurance",
+          `https://oneclick-server-x09s.onrender.com/api/v1/insurance/bike-insurance`,
           formData
         );
         console.log(response.data.bikeInsuranceObject);

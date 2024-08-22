@@ -33,7 +33,7 @@ const Page = () => {
     try {
       console.log("Data>>", Data);
       const response = await axios.post(
-        "https://oneclick-server.onrender.com/api/v1/auth/forget-password-otpCode-complete",
+        `https://oneclick-server-x09s.onrender.com/api/v1/auth/forget-password-otpCode-complete`,
         Data
       );
 

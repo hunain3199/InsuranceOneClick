@@ -7,9 +7,12 @@ import Input from "../../Reauseable/Input";
 import SelectInput from "../../Reauseable/SelectInput";
 import { NextIcon, PreviousIcon } from "../../Reauseable/Icons";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import queryString from "query-string";
 
 // Validation schema using Yup
 const schema = yup.object().shape({
+
   carBrand: yup.string().required("Car Brand is required"),
   engineCc: yup.string().required("Engine CC is required"),
   manufacuringYear: yup.string().required("Manufacturing Year is required"),
@@ -25,12 +28,51 @@ function Form() {
   });
   const { formState: { errors } } = methods;
   const router = useRouter();
+  const [formState, setFormState] = useState(true);
 
   // Handle form submission
+  // const handleNext = async () => {
+  //   // Trigger validation for specific fields before moving to the next step
+  //   const isValid = await methods.trigger(["carBrand", "valueOfCar"]);
+
+  //   if (isValid) {
+  //     setFormState(false); // Move to the next form section if valid
+  //   } else {
+  //     console.log("Please fill in the required fields.");
+  //   }
+  // };
   const onSubmit = async (data) => {
-    console.log(data);
-    methods.reset(); // Reset form after submission
-    router.replace("/insurance/auto/plans"); // Navigate to the plans page
+    // if (formState) {
+    //   handleNext();
+    // } else {
+    // Only send the required fields
+    const formData = {
+      carMake: data.carBrand,
+      carPrice: data.valueOfCar,
+    };
+    try {
+      const response = await axios.post(
+        `https://oneclick-server-x09s.onrender.com/api/v1/insurance/car-insurance`,
+        formData
+      );
+      console.log(response.data.carInsuranceObject);
+
+      // Extract bikeInsuranceObject from response
+      const carInsuranceObject = response.data.carInsuranceObject;
+
+      // Construct the URL with query parameters
+      const query = queryString.stringify({
+        carInsuranceObject: JSON.stringify(carInsuranceObject),
+      });
+
+      // Redirect with query parameters
+      router.push(`/insurance/auto/plans?${query}`);
+      methods.reset();
+
+    } catch (error) {
+      console.error("Failed to submit form", error);
+    }
+    // }
   };
 
   const carBrand = [
@@ -172,22 +214,19 @@ function Form() {
         </div>
 
         <div className="flex justify-between mt-6">
-          <button
+          {/* <button
             type="button"
             onClick={() => router.back()}
             className="btn btn-secondary flex items-center space-x-2"
           >
             <PreviousIcon />
             <span>Previous</span>
-          </button>
+          </button> */}
           <button
             type="submit"
-            disabled={Object.keys(errors).length > 0} // Disable if there are errors
-            className={`btn btn-primary flex items-center space-x-2 ${
-              Object.keys(errors).length > 0 ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className="rounded-md bg-blue text-[14px] px-[15px] py-2.5 text-sm font-medium text-white shadow flex items-center justify-center gap-2"
           >
-            <span>Next</span>
+            See Plans
             <NextIcon />
           </button>
         </div>

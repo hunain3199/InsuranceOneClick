@@ -47,7 +47,7 @@ const Page = () => {
       console.log("Data to send:", dataToSend); // Log the data being sent
 
       const response = await axios.post(
-        "https://oneclick-server.onrender.com/api/v1/auth/otpCode-complete",
+        `https://oneclick-server-x09s.onrender.com/api/v1/auth/otpCode-complete`,
 
         dataToSend
       );

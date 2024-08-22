@@ -9,10 +9,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Caraosal from "../ui/Caraosal";
 
-const Accordian = () => {
+const Accordian = ({insuranceCompany,yearlyPlan,logo,percentage}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [btnOpen, setBtnOpen] = useState(false);
-
+  const monthlyPlan = Math.trunc(parseFloat(yearlyPlan) / 12);
   const toggleBtn = () => {
     isOpen && setIsOpen(false);
     setBtnOpen(!btnOpen);
@@ -29,7 +29,7 @@ const Accordian = () => {
             <div className="flex flex-col items-center justify-between p-0 bg-white border-r border-gray-300 lg:p-4">
               <div className="w-[100px] h-[90px]">
                 <Image
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-8cxBhvKabO7xi7cUweeN70DSBURQsVk-HnCSBOFeRg&s"
+                  src={logo}
                   alt=""
                   width={100}
                   height={90}
@@ -37,7 +37,7 @@ const Accordian = () => {
                 />
               </div>
               <p className="text-center text-[14px] font-bold text-lightGray">
-                Takaful Total <br /> Loss and Theft <br /> Only
+              {insuranceCompany} <br /> Loss and Theft <br /> Only
               </p>
             </div>
             <div className="relative flex-1 mt-[40px] ">
@@ -48,7 +48,7 @@ const Accordian = () => {
                       <p>
                         Rate
                         <span className="text-[15px] font-semibold text-black ml-2">
-                          1.5%
+                          {percentage} %
                         </span>
                       </p>
                     </li>
@@ -56,7 +56,7 @@ const Accordian = () => {
                       <p>
                         Installment Plan
                         <span className="text-[15px] font-semibold text-black ml-2">
-                          Rs. 6250 / month
+                          Rs. {monthlyPlan}/ month
                         </span>
                       </p>
                     </li>
@@ -64,7 +64,7 @@ const Accordian = () => {
                       <p>
                         Total
                         <span className="text-[15px] font-semibold text-black ml-2">
-                          Rs 37,500
+                          Rs {Math.trunc(yearlyPlan)}
                         </span>
                       </p>
                     </li>
@@ -106,7 +106,7 @@ const Accordian = () => {
           {/* {isOpen && <InsuranceDetails />} */}
         </>
       </div>
-      <Call />
+      
      
       
     </div>

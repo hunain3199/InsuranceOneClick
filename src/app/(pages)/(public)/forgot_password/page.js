@@ -27,7 +27,7 @@ const ForgetPassword = ({ token }) => {
     try {
       console.log({ email });
       const response = await axios.post(
-        "https://oneclick-server.onrender.com/api/v1/auth/forget-password",
+        `https://oneclick-server-x09s.onrender.com/api/v1/auth/forget-password`,
         { email }
       );
       if (response.data.success === true) {

@@ -67,7 +67,7 @@ const SalesForm = ({ token }) => {
 
     try {
       const response = await axios.post(
-        "https://oneclick-server.onrender.com/api/v1/admin/salesInvoice",
+        `https://oneclick-server-x09s.onrender.com/api/v1/admin/salesInvoice`,
         data,
         {
           withCredentials: true,

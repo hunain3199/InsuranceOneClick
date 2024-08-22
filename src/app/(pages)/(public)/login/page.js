@@ -39,7 +39,7 @@ function Login() {
       };
       console.log("partnerData>>", partnerData);
       const response = await axios.post(
-        "https://oneclick-server.onrender.com/api/v1/auth/login",
+        `https://oneclick-server-x09s.onrender.com/api/v1/auth/login`,
         partnerData,
         { withCredentials: true }
       );
