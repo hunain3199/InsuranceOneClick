@@ -51,7 +51,7 @@ const HeroMain = () => {
                 {/* Life  */}
                 <IconCard src={Life} alt="life_icon" title="Life" />
                 {/* Home  */}
-                <IconCard src={Home} alt="home_icon" title="Home" />
+                <IconCard src={Home} alt="home_icon" title="General" />
               </div>
             </div>
           </div>
