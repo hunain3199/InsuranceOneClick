@@ -150,13 +150,13 @@ function Footer() {
                     href="#"
                     className="block mt-2 text-sm text-black  hover:underline"
                   >
-                    +92 333 242 5588
+                    +92 322 828 7111
                   </p>
                   <p
                     href="#"
                     className="block mt-2 text-sm text-black  hover:underline"
                   >
-                    +92 337 330 1864
+                    +92 315 396 6678
                   </p>
                   <p
                     href="#"
@@ -173,7 +173,7 @@ function Footer() {
 
           <div className="sm:flex sm:items-center sm:justify-between">
             <p className=" text-black dark:text-gray-400">
-              R-613, Block 15, Dastagir, FB Area, Karachi Pakistan
+              R-489 , Block 16, FB Area, Karachi Pakistan
             </p>
             <p className=" text-black dark:text-gray-400">
               © OneClickDigital 2024 - All rights reserved
