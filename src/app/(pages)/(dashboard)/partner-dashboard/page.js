@@ -1,12 +1,7 @@
-import React from 'react'
-import Dashboard from '@/app/components/partnerDashboard/Dashboard'
+import { NextPage } from "next";
+import dynamic from "next/dynamic";
+const AdminApp = dynamic(() => import("../../../components/AdminApp"), { ssr: false });
 
-const partnerDashboard = () => {
-  return (
-    <>
-      <Dashboard/>
-    </>
-  )
-}
+const PartnerDashboard = () => <AdminApp />;
 
-export default partnerDashboard
+export default PartnerDashboard;
