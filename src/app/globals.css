@@ -138,7 +138,7 @@ body {
 }
 
 .detailsbox .boxheader p {
-  padding-top: 0.25rem;
+  padding-top: 1rem;
   padding-bottom: 0.25rem;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
@@ -146,6 +146,7 @@ body {
   color: #8898aa;
   font-weight: 600;
   line-height: 1.5;
+  text-align: justify;
 }
 .detailsbox .boxbody {
   flex: 1 1 auto;
@@ -217,9 +218,25 @@ body {
   background-color: rgb(4, 90, 4);
   transition: all 0.5s ease;
 }
-
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 768px) {
   .detailsbox .boxbody > div .formdetails {
-    padding-left: 0;
+    padding-left: 0px;
+  }
+}
+@media screen and (max-width: 640px) {
+  .detailsbox .boxheader h3 {
+    font-size: 1.25rem;
+  }
+  .detailsbox .boxheader p {
+    font-size: 0.65rem;
+  }
+  .detailsbox .boxbody > div h6 {
+    font-size: 1rem;
+  }
+  .detailsbox .boxbody > div .formdetails .form-group {
+    margin-bottom: 0rem;
+  }
+  .detailsbox .save {
+    margin-top: 1.25rem;
   }
 }
