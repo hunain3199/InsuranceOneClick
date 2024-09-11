@@ -10,6 +10,7 @@ import { NextIcon, PreviousIcon } from "../../Reauseable/Icons";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import queryString from "query-string";
+import { toWords } from 'number-to-words';
 
 const schema = yup.object().shape({
   bikeMake: yup.string().required("Bike make is required"),
@@ -23,6 +24,23 @@ const schema = yup.object().shape({
 
 const Form = () => {
   const [formState, setFormState] = useState(true);
+
+  const [number, setNumber] = useState('');
+  const [words, setWords] = useState('');
+
+  // Function to handle input change and convert the number to words
+  const handleChange = (e) => {
+    const value = e.target.value;
+    
+    // Check if input is a valid number
+    if (!isNaN(value) && value !== '') {
+      setNumber(value);
+      setWords(toWords(Number(value))); // Convert the number to words
+    } else {
+      setNumber('');
+      setWords('');
+    }
+  };
   const methods = useForm({
     resolver: yupResolver(schema),
   });
@@ -140,7 +158,10 @@ const Form = () => {
               type="number"
               name="bikePrice"
               className=""
+              func={handleChange}
+              val={number}
             />
+            <lable>{words}</lable>
           </div>
         ) : (
           <div>
