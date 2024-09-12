@@ -30,7 +30,6 @@ export default function Home() {
       <ConceptualSec />
       <Cards />
       <InsurancePlan />
-      
     </>
   );
 }

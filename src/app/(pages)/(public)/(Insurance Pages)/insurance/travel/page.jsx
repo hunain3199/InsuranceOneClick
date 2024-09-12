@@ -1,8 +1,7 @@
 import React from "react";
 import InsuranceContent from "../../../../../components/Reauseable/InsuranceContent";
-import Form from "../../../../../components/insurance/Auto/Form";
 import travel from "@public/assets/insurance/travel2.png";
-
+import TravelForm from "../../../../../components/Reauseable/TravelForm"
 const page = () => {
   return (
     <>
@@ -18,7 +17,10 @@ const page = () => {
             }
           />
         </div>
-        <Form />
+        <div>
+          <TravelForm/>
+        </div>
+        
       </div>
     </>
   );
