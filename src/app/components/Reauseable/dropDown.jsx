@@ -17,11 +17,11 @@ const DropdownNavbar = () => {
     { href: "/insurance/auto", label: "Auto" },
     { href: "/insurance/bike", label: "Bike" },
     { href: "/insurance/commercial", label: "Commercial" },
-    { href: "/health", label: "Health" },
-    { href: "/family", label: "Family" },
-    { href: "/travel", label: "Travel" },
-    { href: "/life", label: "Life" },
-    { href: "/general", label: "General" },
+    { href: "/insurance/health", label: "Health" },
+    { href: "/insurance/family", label: "Family" },
+    { href: "/insurance/travel", label: "Travel" },
+    { href: "/insurance/life", label: "Life" },
+    { href: "/insurance/general", label: "General" },
   ];
   return (
     <DropdownMenu>
