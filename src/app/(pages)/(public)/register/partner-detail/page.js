@@ -37,9 +37,9 @@ const Page = () => {
 
     if (email && name) {
       // partner_email.current.value = email;
-      partner_email.current.value = 'ABc@gmail.com';
+      partner_email.current.value = 'XYZ@gmail.com';
       // partner_cnic_name.current.value = name;
-      partner_cnic_name.current.value = 'ABC';
+      partner_cnic_name.current.value = 'XYZ';
     }
   }, [email, name, isRegistered, router]);
 
@@ -210,8 +210,8 @@ const Page = () => {
                     type="text"
                     id="name"
                     ref={partner_cnic_name}
-                    defaultValue={name}
-                    // defaultValue={'ABC'}
+                    // defaultValue={name}
+                    defaultValue={'XYZ'}
                     disabled
                   />
                 </div>
@@ -263,8 +263,8 @@ const Page = () => {
                     type="email"
                     id="email"
                     ref={partner_email}
-                    defaultValue={partner_email}
-                    // defaultValue={'Abc@gmail.com'}
+                    // defaultValue={partner_email}
+                    defaultValue={'XYZ@gmail.com'}
                     disabled
                   />
                 </div>
