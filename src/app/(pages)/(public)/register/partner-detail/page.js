@@ -149,7 +149,7 @@ const Page = () => {
         <div className="bg-gray-100 shadow-lg flex flex-col min-w-0 border border-black/[.15] rounded-md mx-5 my-12">
           <div className="boxheader p-5 bg-white rounded-t-md shadow-md">
             <h3 className="text-[rgb(50,50,93)] text-lg md:text-2xl font-semibold leading-[25.5px] m-0 p-0 text-center">
-              PARTNER'S DETAILS
+              PARTNER&apos;S DETAILS
             </h3>
             <p className="pt-4 pb-1 text-xs sm:text-[0.65rem] leading-6 tracking-wide uppercase text-[#8898aa] font-semibold text-justify">
               <span className="text-red-600">NOTE:</span>
@@ -220,7 +220,7 @@ const Page = () => {
                     className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
                     htmlFor="father-name"
                   >
-                    Father's Name
+                    Father&apos;s Name
                   </label>
                   <input
                     className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
@@ -379,7 +379,7 @@ const Page = () => {
                     className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
                     htmlFor="relative-name"
                   >
-                    Relative's Name
+                    Relative&apos;s Name
                   </label>
                   <input
                     className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
@@ -395,7 +395,7 @@ const Page = () => {
                     className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
                     htmlFor="relative-number"
                   >
-                    Relative's CNIC Number
+                    Relative&apos; CNIC Number
                   </label>
                   <input
                     className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
