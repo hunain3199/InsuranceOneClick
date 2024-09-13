@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const ForgetPassword = ({ token }) => {
+const ForgetPassword = () => {
   const emailRef = useRef(null);
   const [emailError, setEmailError] = useState("");
   const router = useRouter();
