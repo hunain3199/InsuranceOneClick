@@ -1,6 +1,7 @@
 import React from "react";
 
 const Details = () => {
+  
   return (
     <div className="flex flex-col items-center justify-center gap-0 text-center lg:flex-row lg:gap-6 mb-[50px]">
       <div className="flex flex-col w-full gap-1 p-0 mx-auto lg:p-4 ">
@@ -30,6 +31,10 @@ const Details = () => {
           <div class="flex-1 h-0 border-t border-lightGray"></div>
           <div class="pl-[16px]">230,000</div>{" "}
         </div>{" "}
+        <div>
+          <div>
+          </div>
+        </div>
       </div>
     </div>
   );
