@@ -152,7 +152,7 @@ body {
 
 /* Hero-Main-BG  */
 .hero-main {
-  background-image: url("../../public/assets/Background/heromainbg.svg");
+  background-image: url('../../public/assets/Background/heromainbg.svg');
   background-size: cover;
   background-position-y: center;
   background-position-x: center;
@@ -161,7 +161,7 @@ body {
 
 /* Footer-Background-Set */
 .bg-image-two {
-  background-image: url("../../public/assets/Background/footer-bg1.svg");
+  background-image: url('../../public/assets/Background/footer-bg1.svg');
   background-size: cover;
   background-position-y: center;
   background-position-x: center;
@@ -170,7 +170,7 @@ body {
 
 /* About-Background-Set */
 .about-bg {
-  background-image: url("../../public/assets/Background/aboutbg.svg");
+  background-image: url('../../public/assets/Background/aboutbg.svg');
   background-size: cover;
   background-position-y: center;
   background-position-x: center;
@@ -178,14 +178,13 @@ body {
 }
 
 /* Conceptual-Section-Bg  */
-.bg-conceptual{
-  background-image: url("../../public/assets/Background/concepbg.svg");
+.bg-conceptual {
+  background-image: url('../../public/assets/Background/concepbg.svg');
   background-size: contain;
   background-position-y: center;
   background-position-x: center;
   background-repeat: no-repeat;
 }
-
 
 /* Slider-CSS  */
 .slide {
@@ -215,7 +214,7 @@ body {
   }
 }
 .plain-bg {
-  background-image: url("../../public/assets/Background/aeroplane.svg");
+  background-image: url('../../public/assets/Background/aeroplane.svg');
   background-size: cover;
   background-position-y: center;
   background-position-x: center;

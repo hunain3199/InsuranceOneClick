@@ -1,8 +1,9 @@
-"use client";
-import Dashboard from "@/app/components/adminDashboard/Dashboard";
+import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+const MyAdminApp = dynamic(() => import('../../../components/MyAdminApp'), {
+  ssr: false,
+});
 
-const Page = () => {
-  return <Dashboard />;
-};
+const AdminDashboard = () => <MyAdminApp />;
 
-export default Page;
+export default AdminDashboard;
