@@ -116,7 +116,7 @@ const Page = () => {
     // Sending the request
     try {
       const response = await axios.post(
-        'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-datail',
+        'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-detail',
         formData,
         {
           withCredentials: true,
