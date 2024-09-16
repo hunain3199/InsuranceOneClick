@@ -29,6 +29,9 @@ const SettingsMenuItem = React.forwardRef((props, ref) => {
   );
 });
 
+SettingsMenuItem.displayName = 'SettingsMenuItem';
+
+
 const MyAppBar = (props) => (
   <AppBar
     {...props}

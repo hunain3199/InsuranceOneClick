@@ -23,7 +23,7 @@ export const MyDashboard = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8080/api/v1/partner/getInvoices", {
+      .get("https://oneclick-server-x09s.onrender.com/api/v1/partner/getInvoices", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -74,7 +74,7 @@ const customDataProvider = (apiUrl, httpClient) => {
 };
 
 const dataProvider = customDataProvider(
-  "http://localhost:8080/api/v1/partner",
+  "https://oneclick-server-x09s.onrender.com/api/v1/partner",
   httpClient
 );
 
