@@ -12,31 +12,35 @@ import {
 import { useEffect, useState } from "react";
 import { useDataProvider } from "react-admin";
 import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
 
 export const MyDashboard = () => {
   const [userList, setUserList] = useState();
   const dataProvider = useDataProvider();
 
-  // useEffect(() => {
-  //   dataProvider
-  //     .getList("users", {
-  //       pagination: { page: 1, perPage: 10 },
-  //       sort: { field: "name", order: "ASC" },
-  //       filter: {},
-  //     })
-  //     .then(({ data, total }) => {
-  //       // setUsers(data);
-  //       // setLoading(false);
-  //       setUserList(data);
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-       
-  //       // setError(error);
-  //       // setLoading(false);
-  //     });
-  // }, []);
+  useEffect(() => {
+    // Custom API call to fetch array of objects
+    const token = localStorage.getItem("token");
+
+    axios
+      .get("http://localhost:8080/api/v1/partner/getInvoices", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const users = response?.data?.data.map((user) => ({
+          ...user, // Spread the existing properties
+          id: user._id, // Add `id` property as a copy of `_id`
+        }));
+
+        console.log(users); // Array of user objects with `id`
+        setUserList(users);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const columns = [
     { field: "invoice_id", headerName: "Invoice ID", width: 150 },
@@ -223,10 +227,10 @@ export const MyDashboard = () => {
               </CardActions>
             </Card>
           </Grid> */}
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <Box sx={{ height: 400, width: "100%" }}>
               <DataGrid
-                rows={rows}
+                rows={userList}
                 rowHeight={38}
                 columns={columns}
                 pageSize={5}
