@@ -1,3 +1,4 @@
+"use client"
 import { Cancel } from "./Icons";
 
 function Modal({ isOpen, onClose, children }) {

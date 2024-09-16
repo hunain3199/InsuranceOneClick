@@ -17,7 +17,7 @@ const Plains = () => {
           {/* <h1 className="text-blue-400 text-lg font-sans mb-3">
             Our Community
           </h1> */}
-          <h1 className="text-3xl font-bold text-neutral-500 font-sans">
+          <h1 className="text-3xl font-bold text-neutral-500 font-sans uppercase">
             {" "}
             OUR PROUD PARTNERS
             

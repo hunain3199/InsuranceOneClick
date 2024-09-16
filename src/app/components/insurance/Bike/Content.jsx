@@ -12,7 +12,7 @@ const Content = () => {
 
   return (
     <div className="flex flex-col items-center justify-center ">
-      <div className="w-[340px] h-[274px]">
+      <div className="max-w-[340px] max-h-[274px]">
         <img
           src="https://pngfre.com/wp-content/uploads/bike-png-image-pngfre-50-1024x878.png"
           className="object-contain w-full h-full"

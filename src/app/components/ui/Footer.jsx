@@ -23,17 +23,17 @@ function Footer() {
   return (
     <>
       <Plains />
-      <hr className="h-px my-6 bg-gray-200 border-none mx-44" />
+      <hr className="h-px my-6 bg-gray border-none mx-44" />
       <footer className="bg-image-two  mt-5">
         <div className="container p-6 mx-auto">
-          <div className="lg:flex">
-            <div className="w-full -mx-6 lg:w-2/5">
-              <div className="px-6">
+          <div className="lg:flex ">
+            <div className="w-full -mx-6 lg:w-2/5 ">
+              <div className="px-6 ">
                 <Link href={"/"}>
                   <Image src={Logo} className="w-28" alt="Logo" />
                 </Link>
 
-                <p className="max-w-sm mt-2 text-black dark:text-gray-400">
+                <p className="max-w-sm leading-6 [&:not(:first-child)]:mt-6">
                   OneClick Digital Offers customized insurance solutions to meet
                   your specific needs, whether it&apos;s for your home, car,
                   health, business, or life. We work with you to create a policy

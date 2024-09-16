@@ -1,401 +1,465 @@
-'use client'
-import React, { useState, useRef,useContext,useEffect } from "react";
-// import fetchData from "../../utils/core";
-import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
-import { AuthContext } from "@/app/store/Context";
+'use client';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
+import { AuthContext } from '@/app/store/Context';
+import emptyProfilePic from '@public/assets/BlankProfile/img.png';
 
 const Page = () => {
-    const router = useRouter(); 
+  const router = useRouter();
+  const [selectedImage, setSelectedImage] = useState(emptyProfilePic);
 
-    const partner_cnic_name = useRef("");
-    const partner_father_name = useRef("");
-    const partner_mobile = useRef("");
-    const partner_email = useRef("");
-    const partner_dob = useRef("");
-    const partner_status = useRef("");
-    const partner_city = useRef("");
-    const partner_cnic_number = useRef("");
-    const partner_cnic_expiry_date = useRef("");
-    const partner_home_address = useRef("");
-    const partner_blood_cnic_name = useRef("");
-    const partner_blood_cnic_number = useRef("");
-    const partner_blood_relation = useRef("");
-    const partner_bank_account = useRef("");
+  const profilePic = useRef(null);
+  const partner_cnic_name = useRef(null);
+  const partner_father_name = useRef(null);
+  const partner_mobile = useRef(null);
+  const partner_email = useRef(null);
+  const partner_dob = useRef(null);
+  const partner_status = useRef(null);
+  const partner_city = useRef(null);
+  const partner_cnic_number = useRef(null);
+  const partner_cnic_expiry_date = useRef(null);
+  const partner_home_address = useRef(null);
+  const partner_blood_cnic_name = useRef(null);
+  const partner_blood_cnic_number = useRef(null);
+  const partner_blood_relation = useRef(null);
+  const partner_bank_account = useRef(null);
 
-   
-    const [userError, setUserError] = useState("");
-    const {email,name,isRegistered,updatedUserCnic} = useContext(AuthContext)
-    useEffect(() => {
-            
-        if(!isRegistered){
-            router.replace('/register')
+  const { email, name, isRegistered, updatedUserCnic } =
+    useContext(AuthContext);
+
+  useEffect(() => {
+    if (!isRegistered) {
+      // router.replace('/register');
+    }
+
+    if (email && name) {
+      // partner_email.current.value = email;
+      partner_email.current.value = 'XYZ@gmail.com';
+      // partner_cnic_name.current.value = name;
+      partner_cnic_name.current.value = 'XYZ';
+    }
+  }, [email, name, isRegistered, router]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    // Check if the selected file is an image
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      toast.error('Please select a valid image file');
+      e.target.value = '';
+      setSelectedImage(emptyProfilePic);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    // Image handling
+    if (profilePic.current.files[0]) {
+      const blob = new Blob([profilePic.current.files[0]], {
+        type: profilePic.current.files[0].type,
+      });
+      formData.append(
+        'partner_profile_picture',
+        blob,
+        profilePic.current.files[0].name
+      );
+    } else {
+      toast.error('Please upload a profile picture.');
+      return;
+    }
+
+    // Collecting form data
+    formData.append('partner_cnic_name', partner_cnic_name.current.value);
+    formData.append('partner_father_name', partner_father_name.current.value);
+    formData.append('partner_mobile', partner_mobile.current.value);
+    formData.append('partner_email', partner_email.current.value);
+    formData.append('partner_dob', partner_dob.current.value);
+    formData.append('partner_status', partner_status.current.value);
+    formData.append('partner_city', partner_city.current.value);
+    formData.append('partner_cnic_number', partner_cnic_number.current.value);
+    formData.append(
+      'partner_cnic_expiry_date',
+      partner_cnic_expiry_date.current.value
+    );
+    formData.append('partner_home_address', partner_home_address.current.value);
+    formData.append(
+      'partner_blood_cnic_name',
+      partner_blood_cnic_name.current.value
+    );
+    formData.append(
+      'partner_blood_cnic_number',
+      partner_blood_cnic_number.current.value
+    );
+    formData.append(
+      'partner_blood_relation',
+      partner_blood_relation.current.value
+    );
+    formData.append('partner_bank_account', partner_bank_account.current.value);
+
+    // Log FormData content
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    // Sending the request
+    try {
+      const response = await axios.post(
+        'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-detail',
+        formData,
+        {
+          withCredentials: true,
+          headers: { 'Content-Type': 'multipart/form-data' },
         }
-        
-        if (email,name) {
-            partner_email.current.value = email; // Set default value
-            partner_cnic_name.current.value = name
+      );
 
-        }
-    }, [email,name]);
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+      if (response.data.success) {
+        toast.success(response.data.message);
+        updatedUserCnic(response.data.userId);
+        router.replace('/login');
+      } else {
+        toast.error(response.data.message || 'User already exists');
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        toast.error(error.response.data.message || 'Registration Error');
+      } else {
+        console.error('Error:', error);
+        toast.error('Registration Error');
+      }
+    }
+  };
 
-        try {
-            const partnerData = {
-                partner_cnic_name: partner_cnic_name.current.value,
-                partner_mobile: partner_mobile.current.value,
-                partner_email: partner_email.current.value,
-                partner_dob: partner_dob.current.value,
-                partner_status: partner_status.current.value,
-                partner_city: partner_city.current.value,
-                partner_cnic_number: partner_cnic_number.current.value,
-                partner_cnic_expiry_date: partner_cnic_expiry_date.current.value,
-                partner_home_address: partner_home_address.current.value,
-                partner_blood_cnic_name: partner_blood_cnic_name.current.value,
-                partner_blood_cnic_number:partner_blood_cnic_number.current.value,
-                partner_blood_relation: partner_blood_relation.current.value,
-                partner_bank_account: partner_bank_account.current.value,
-                partner_father_name: partner_father_name.current.value,
-            };
-
-            const response = await axios.post("https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-datail", partnerData,
-            { withCredentials: true }
-        );
-            console.log("partner-info response: ", response);
-
-            if (!response) {
-                setUserError("error");
-                console.log("Invalid response from server");
-                return;
-            }
-    
-            if (response.success === false) {
-                setUserError("error");
-                console.log("User already exists");
-                return;
-            } else {
-                toast.success(response.message); // Display success message from API
-            }
-    
-            if (response.data.success === true) {
-                updatedUserCnic(response.data.userId)
-                router.replace("/login");
-            }
-        } catch (error) {
-            console.log("Error:", error);
-            toast.error("Registration Error");
-        }
-
-        
-    };
-
-   
-
-
-
-    return (
-        <>
-            <div className="flex justify-center m-4 ">
-                <form onSubmit={handleSubmit}
-                    className="w-full p-8 bg-gray-100 border border-blue-400 rounded-lg shadow-lg py-7"
-                >
-                    <h1 className="flex items-center justify-center font-sans text-2xl font-bold text-blue-500 border-b-4 border-blue-700 ">
-                        PARTENER&apos;S DETAILS
-                    </h1>
-
-                    <div className="p-3 m-2 border-2 border-red-400 rounded-md ">
-                        <p><span className="text-red-600 ">NOTE:</span><br />
-                            Please ensure all information provided in this
-                            form is accurate as it cannot be changed once
-                            submitted. Double-check your entries before proceeding.
-                            If you have any questions, contact our support team for
-                            assistance. Thank you for your attention to detail.
-                        </p>
-                    </div>
-
-                    <div className="mt-4 mb-4">
-
-                        <label
-                            className="block pb-1 mx-2 text-sm text-gray-500"
-                            htmlFor="name"
-                        >
-                            Name
-                        </label>
-                        <input
-                            required
-                            ref={partner_cnic_name}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="CNIC NAME"
-                            type="name"
-                            id="name"
-                            defaultValue={name}
-                            disabled
-                            
-                        />
-                    </div>
-                    <div className="mt-4 mb-4">
-
-                        <label
-                            className="block pb-1 mx-2 text-sm text-gray-500"
-                            htmlFor="father name"
-                        >
-                            Father Name
-                        </label>
-                        <input
-                            required
-                            ref={partner_father_name}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="CNIC FATHER NAME"
-                            type="name"
-                            id="father name"
-                            
-                        />
-                    </div>
-                    <div className="mt-4 mb-4">
-
-                        <label
-                            className="block pb-1 mx-2 text-sm text-gray-500"
-                            htmlFor="number"
-                        >
-                            Mobile Nmber
-                        </label>
-                        <input
-                            required
-                            ref={partner_mobile}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="03*********"
-                            type="number"
-                            id="number"
-                            
-                        />
-                    </div>
-                    <div className="mt-4 mb-4">
-
-                        <label
-                            className="block pb-1 mx-2 text-sm text-gray-500"
-                            htmlFor="email"
-                        >
-                            E-mail
-                        </label>
-                        <input
-
-                            required
-                            ref={partner_email}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            // placeholder="REGISTERED EMAIL EMAIL"
-                            type="email"
-                            id="email"
-                            name="email"
-                            defaultValue={email}
-                            disabled
-                           
-                        />
-                    </div>
-                    <div className="mt-4 mb-4">
-
-                        <label
-                            className="block pb-1 mx-2 text-sm text-gray-500"
-                            htmlFor="date"
-                        >
-                            Date Of Birth
-                        </label>
-                        <input
-                            required
-                            ref={partner_dob}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="dd/mm/yyyy"
-                            type="date"
-                            id="date"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="status"
-                        >
-                            Martial Status
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_status}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="MARRIED / SINGLE"
-                            type="text"
-                            id="status"
-                           
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="city"
-                        >
-                            City
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_city}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="YOUR CITY"
-                            type="text"
-                            id="city"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="cnic number"
-                        >
-                            CNIC Number
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_cnic_number}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="4****-*******-*"
-                            type="number"
-                            id="cnic number"
-                           
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="cnic expiry"
-                        >
-                            CNIC Expired Date
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_cnic_expiry_date}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="dd/mm/yyyy"
-                            type="date"
-                            id="cnic expiry"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="address"
-                        >
-                            Residential Address
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_home_address}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="YOUR BRIEF ADDRESS"
-                            type="text"
-                            id="address"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="relative name"
-                        >
-                            CNIC Name(Blood)
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_blood_cnic_name}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="REALTIVE NAME"
-                            type="text"
-                            id="relative name"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="relative cnic number"
-                        >
-                            CNIC Number(Blood)
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_blood_cnic_number}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="REALTIVE CNIC NUMBER"
-                            type="number"
-                            id="relative cnic number"
-                           
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="relation"
-                        >
-                            CNIC Blood(Relation)
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_blood_relation}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="BROTHER, SISTER, etc.."
-                            type="text"
-                            id="relation"
-                            
-                        />
-                    </div>
-                    <div className="">
-                        <label
-                            className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
-                            htmlFor="bank account number"
-                        >
-                            Active Bank Account Number / Easypaisa / Jazzcash
-                        </label>
-                        <input
-
-
-                            required
-                            ref={partner_bank_account}
-                            className="w-full p-3 text-sm border rounded-lg border-black-200"
-                            placeholder="000000000000"
-                            type="number"
-                            id="bank account number"
-                           
-                        />
-                    </div>
-
-                    <button
+  return (
+    <>
+      <Toaster />
+      <form onSubmit={handleSubmit}>
+        <div className="bg-gray-100 shadow-lg flex flex-col min-w-0 border border-black/[.15] rounded-md mx-5 my-12">
+          <div className="boxheader p-5 bg-white rounded-t-md shadow-md">
+            <h3 className="text-[rgb(50,50,93)] text-lg md:text-2xl font-semibold leading-[25.5px] m-0 p-0 text-center">
+              PARTNER&apos;S DETAILS
+            </h3>
+            <p className="pt-4 pb-1 text-xs sm:text-[0.65rem] leading-6 tracking-wide uppercase text-[#8898aa] font-semibold text-justify">
+              <span className="text-red-600">NOTE:</span>
+              <br />
+              Please ensure all information provided in this form is accurate,
+              as it cannot be changed once submitted. Double-check your entries
+              before proceeding. If you have any questions, please contact our
+              support team for assistance. Thank you for your attention to
+              detail.
+            </p>
+          </div>
+          <div className="flex-1 min-h-[1px] p-6">
+            <div className="md:pl-6 pl-0">
+              <h6 className="pt-1 pb-1 mb-6 text-base sm:text-2xl uppercase text-[#8898aa] font-semibold leading-6 tracking-wide ">
+                User Information
+              </h6>
+              <div className="grid grid-cols-1 items-center mb-6">
+                <div className="flex sm:flex-row flex-col items-start gap-5 justify-center sm:items-center">
+                  <div className="shrink-0">
+                    <Image
+                      className="h-16 w-16 object-cover rounded-full"
+                      src={selectedImage}
+                      alt="Profile photo"
+                      width={64}
+                      height={64}
+                    />
+                  </div>
+                  <label className="block">
+                    <span className="sr-only">Choose profile photo</span>
+                    <input
+                      required
+                      type="file"
+                      accept="image/*"
+                      ref={profilePic}
+                      className="block w-full text-sm text-slate-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-violet-50 file:text-violet-700
+                                  hover:file:bg-violet-100"
+                      onChange={handleImageChange}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    htmlFor="name"
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Name as per CNIC"
+                    type="text"
+                    id="name"
+                    ref={partner_cnic_name}
+                    // defaultValue={name}
+                    defaultValue={'XYZ'}
+                    disabled
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="father-name"
+                  >
+                    Father&apos;s Name
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Father's Name as per CNIC"
+                    type="text"
+                    id="father-name"
+                    ref={partner_father_name}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="number"
+                  >
+                    Mobile Number
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="03XXXXXXXXX"
+                    type="tel"
+                    id="number"
+                    ref={partner_mobile}
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="email"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Registered Email"
+                    type="email"
+                    id="email"
+                    ref={partner_email}
+                    // defaultValue={partner_email}
+                    defaultValue={'XYZ@gmail.com'}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="date"
+                  >
+                    Date of Birth
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    type="date"
+                    id="date"
+                    ref={partner_dob}
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="status"
+                  >
+                    Marital Status
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Married / Single"
+                    type="text"
+                    id="status"
+                    ref={partner_status}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="city"
+                  >
+                    City of Residence
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Your City"
+                    type="text"
+                    id="city"
+                    ref={partner_city}
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="address"
+                  >
+                    Residential Address
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Your Complete Address"
+                    type="text"
+                    id="address"
+                    ref={partner_home_address}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="cnic-number"
+                  >
+                    CNIC Number
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="4****-*******-*"
+                    type="text"
+                    id="cnic-number"
+                    ref={partner_cnic_number}
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="cnic-expiry"
+                  >
+                    CNIC Expiry Date
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    type="date"
+                    id="cnic-expiry"
+                    ref={partner_cnic_expiry_date}
+                  />
+                </div>
+              </div>
+              <hr className="my-6" />
+              <h6 className="pt-1 pb-1 mb-6 text-base sm:text-2xl uppercase text-[#8898aa] font-semibold leading-6 tracking-wide ">
+                Blood Relative Details
+              </h6>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="relative-name"
+                  >
+                    Relative&apos;s Name
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Relative's Name"
+                    type="text"
+                    id="relative-name"
+                    ref={partner_blood_cnic_name}
+                  />
+                </div>
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="relative-number"
+                  >
+                    Relative&apos; CNIC Number
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="4****-*******-*"
+                    type="text"
+                    id="relative-number"
+                    ref={partner_blood_cnic_number}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="relation"
+                  >
+                    Relation
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Your Relation"
+                    type="text"
+                    id="relation"
+                    ref={partner_blood_relation}
+                  />
+                </div>
+              </div>
+              <hr className="my-6" />
+              <h6 className="pt-1 pb-1 mb-6 text-base sm:text-2xl uppercase text-[#8898aa] font-semibold leading-6 tracking-wide ">
+                Bank Account Details
+              </h6>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="mb-0 md:mb-6">
+                  <label
+                    className="text-[#525f7f] text-sm font-semibold inline-block mb-2"
+                    htmlFor="bank-account"
+                  >
+                    Bank Account Number
+                  </label>
+                  <input
+                    className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
+                    required
+                    placeholder="Bank Account Number"
+                    type="text"
+                    id="bank-account"
+                    ref={partner_bank_account}
+                  />
+                </div>
+              </div>
+            </div>
+            <button
               type="submit"
-              className="w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md  transition-all mt-3"
+              className="bg-green-500 text-white py-2 px-4 float-right rounded-lg hover:bg-green-800 transition ease-in-out duration-500 mt-5"
             >
               Submit
             </button>
+            {/* </div> */}
+          </div>
+        </div>
+      </form>
+    </>
+  );
+};
 
-
-                </form>
-            </div>
-        </>
-    )
-}
-
-export default Page
+export default Page;

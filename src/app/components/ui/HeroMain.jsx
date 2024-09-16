@@ -12,13 +12,15 @@ import Life from "@public/assets/Hero/life.svg";
 import "@/app/globals.css";
 import Link from "next/link";
 import IconCard from "../Reauseable/IconCard";
+import ReactSlider from "./React-slider";
 const HeroMain = () => {
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 p-10 hero-main">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4  lg:gap-8 p-10 hero-main">
         {/* Carousel */}
-        <div className="m-auto">
-          <Slider />
+        <div className=" max-w-[600px] ">
+          {/* <Slider /> */}
+          <ReactSlider/>
         </div>
         {/* Card Part */}
         <div className="flex flex-col justify-center items-center lg:items-start">
