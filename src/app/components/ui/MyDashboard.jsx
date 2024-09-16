@@ -16,24 +16,27 @@ import { DataGrid } from "@mui/x-data-grid";
 export const MyDashboard = () => {
   const [userList, setUserList] = useState();
   const dataProvider = useDataProvider();
-  useEffect(() => {
-    dataProvider
-      .getList("users", {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: "name", order: "ASC" },
-        filter: {},
-      })
-      .then(({ data, total }) => {
-        // setUsers(data);
-        // setLoading(false);
-        setUserList(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        setError(error);
-        // setLoading(false);
-      });
-  }, []);
+
+  // useEffect(() => {
+  //   dataProvider
+  //     .getList("users", {
+  //       pagination: { page: 1, perPage: 10 },
+  //       sort: { field: "name", order: "ASC" },
+  //       filter: {},
+  //     })
+  //     .then(({ data, total }) => {
+  //       // setUsers(data);
+  //       // setLoading(false);
+  //       setUserList(data);
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+       
+  //       // setError(error);
+  //       // setLoading(false);
+  //     });
+  // }, []);
 
   const columns = [
     { field: "invoice_id", headerName: "Invoice ID", width: 150 },
