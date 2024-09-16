@@ -91,7 +91,7 @@ const AdminApp = () => {
       theme={radiantLightTheme}
       darkTheme={radiantDarkTheme}
     >
-      <Resource name="getInvoices" list={InvoiceList} icon={ChatBubbleIcon} />
+      <Resource name="getInvoices" list={ListGuesser} icon={ChatBubbleIcon} />
     </Admin>
   );
 };
