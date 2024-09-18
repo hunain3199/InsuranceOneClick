@@ -30,10 +30,35 @@ const Page = () => {
     console.log("bikeInsuranceObject state:", bikeInsuranceObject); // Log the state
   }, [bikeInsuranceObject]);
 
+
+
+  const handleSubmit = async (e) => {
+    
+    try {
+      console.log("Data>>", Data);
+      const response = await axios.post(
+        `https://oneclick-server-x09s.onrender.com/api/v1/insurance/sendQuotation`,
+       { dataobject:bikeInsuranceObject,
+        userobject:objext
+       },
+      );
+
+      if (!response) {
+        return;
+      }
+
+      
+    } catch (error) {
+      console.error("helloooo", error);
+    }
+  };
+
+
   return (
     <Suspense >
     <div className="p-[30px] bg-customBlue">
       <Details />
+      <button onClick={handleSubmit()} className="bg-blue mt-5">Download Quotation</button>
 
       {bikeInsuranceObject ? (
         bikeInsuranceObject.map((data, i) => (
