@@ -7,11 +7,13 @@ import {
   CardContent,
   Container,
   Grid,
+  Paper,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDataProvider } from "react-admin";
-import { DataGrid } from "@mui/x-data-grid";
+// import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid/DataGrid";
 
 export const MyDashboard = () => {
   const [userList, setUserList] = useState();
@@ -80,7 +82,7 @@ export const MyDashboard = () => {
 
   const rows = [
     {
-      id: 1,
+      id:1,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -103,7 +105,7 @@ export const MyDashboard = () => {
       payment_status: "Paid",
     },
     {
-      id: 1,
+      id:2,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -123,10 +125,10 @@ export const MyDashboard = () => {
       policy_payment_invoice_attachment: "invoice123.pdf",
       partner_agent_employment_code: "EMP98765",
       partner_agent_name: "Jane Smith",
-      payment_status: "Paid",
+      payment_status: "Unpaid",
     },
     {
-      id: 1,
+      id:3,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -151,91 +153,70 @@ export const MyDashboard = () => {
     // Add more rows as needed
   ];
 
+  // marginTop: {sm:"1rem", xs:'3.5rem'}, maxWidth: { xs: "350px", sm: "1150px"}
+
   return (
-    <Container sx={{ marginTop: "1rem" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  PENDING
-                </Typography>
-                <Typography variant="h5" component="div">
-                  $100000
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+    <Container
+      sx={{
+        display: "flex",
+        marginTop: { sm: "1rem", xs: "3.5rem" },
+        maxWidth: { xs: "350px", sm: "1150px" },
+      }}
+    >
+      <div className="w-full">
+        <Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    PENDING
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    $100000
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
 
-          <Grid item xs={12} sm={4}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  COMPLETED
-                </Typography>
-                <Typography variant="h5" component="div">
-                  $5
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+            <Grid item xs={12} sm={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    COMPLETED
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    $5
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
 
-          <Grid item xs={12} sm={4}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  TOTAL
-                </Typography>
-                <Typography variant="h5" component="div">
-                  ${userList?.length}
-                </Typography>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} sm={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    TOTAL
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    ${userList?.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
-        <Grid container spacing={2}>
-          {/* <Grid item xs={12} sm={6}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
-          </Grid> */}
-          <Grid item xs={12} >
-            <Box sx={{ height: 400, width: "100%" }}>
-              <DataGrid
-                rows={rows}
-                rowHeight={38}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-                disableSelectionOnClick
-                experimentalFeatures={{ newEditingApi: false }}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+        <Paper sx={{ height: 400, marginTop: "2rem", overflowX: "auto" }}>
+          <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5, 10]}
+          checkboxSelection
+          sx={{ border: 0 }}
+          rowHeight={30}
+        />
+        </Paper>
+      </div>
     </Container>
   );
 };

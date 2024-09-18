@@ -4,7 +4,7 @@ import MySidebar from "./MySidebar";
 import { MyMenu } from "./MyMenu";
 
 export const MyLayout = ({ children }) => (
-    <Layout appBar={MyAppBar} sidebar={MySidebar} menu={MyMenu}>
+    <Layout appBar={MyAppBar} sidebar={MySidebar} menu={MyMenu} appBarAlwaysOn >
         {children}
     </Layout>
 );

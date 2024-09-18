@@ -31,7 +31,7 @@ const AdminApp = () =>{
 }, []);
 
  return (
-  <Admin dataProvider={dataProvider} layout={MyLayout} dashboard={MyDashboard}>
+  <Admin title="My Custom Admin" dataProvider={dataProvider} layout={MyLayout} dashboard={MyDashboard}>
         <Resource name="posts" list={ListGuesser} icon={BookIcon} />
         <Resource name="getInvoices" list={ListGuesser} icon={ChatBubbleIcon} />
         <Resource name="users" list={ListGuesser} icon={PeopleIcon} />
