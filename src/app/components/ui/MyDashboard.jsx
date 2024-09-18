@@ -12,28 +12,34 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDataProvider } from "react-admin";
-// import { DataGrid } from "@mui/x-data-grid";
-import { DataGrid } from "@mui/x-data-grid/DataGrid";
+import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
 
 export const MyDashboard = () => {
   const [userList, setUserList] = useState();
   const dataProvider = useDataProvider();
+
   useEffect(() => {
-    dataProvider
-      .getList("users", {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: "name", order: "ASC" },
-        filter: {},
+    // Custom API call to fetch array of objects
+    const token = localStorage.getItem("token");
+
+    axios
+      .get("http://localhost:8080/api/v1/partner/getInvoices", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then(({ data, total }) => {
-        // setUsers(data);
-        // setLoading(false);
-        setUserList(data);
-        console.log(data);
+      .then((response) => {
+        const users = response?.data?.data.map((user) => ({
+          ...user, // Spread the existing properties
+          id: user._id, // Add `id` property as a copy of `_id`
+        }));
+
+        console.log(users); // Array of user objects with `id`
+        setUserList(users);
       })
       .catch((error) => {
-        setError(error);
-        // setLoading(false);
+        console.error(error);
       });
   }, []);
 
@@ -192,31 +198,55 @@ export const MyDashboard = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <Card elevation={3}>
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    TOTAL
-                  </Typography>
-                  <Typography variant="h5" component="div">
-                    ${userList?.length}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Grid item xs={12} sm={4}>
+            <Card elevation={3}>
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  TOTAL
+                </Typography>
+                <Typography variant="h5" component="div">
+                  ${userList?.length}
+                </Typography>
+              </CardContent>
+            </Card>
           </Grid>
-        </Box>
-        <Paper sx={{ height: 400, marginTop: "2rem", overflowX: "auto" }}>
-          <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-          sx={{ border: 0 }}
-          rowHeight={30}
-        />
-        </Paper>
-      </div>
+        </Grid>
+      </Box>
+      <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
+        <Grid container spacing={2}>
+          {/* <Grid item xs={12} sm={6}>
+            <Card elevation={3}>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Lizard
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Lizards are a widespread group of squamate reptiles, with over
+                  6,000 species, ranging across all continents except Antarctica
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small">Share</Button>
+                <Button size="small">Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid> */}
+          <Grid item xs={12}>
+            <Box sx={{ height: 400, width: "100%" }}>
+              <DataGrid
+                rows={userList}
+                rowHeight={38}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                checkboxSelection
+                disableSelectionOnClick
+                experimentalFeatures={{ newEditingApi: false }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 };
