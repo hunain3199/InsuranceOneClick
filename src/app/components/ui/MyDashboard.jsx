@@ -30,10 +30,12 @@ export const MyDashboard = () => {
         },
       })
       .then((response) => {
-        const users = response?.data?.data.map((user) => ({
+        console.log(response);
+        const users = response?.data?.map((user) => ({
           ...user, // Spread the existing properties
           id: user._id, // Add `id` property as a copy of `_id`
         }));
+        console.log(users);
 
         console.log(users); // Array of user objects with `id`
         setUserList(users);
@@ -84,79 +86,6 @@ export const MyDashboard = () => {
     },
     { field: "partner_agent_name", headerName: "Agent Name", width: 150 },
     { field: "payment_status", headerName: "Payment Status", width: 150 },
-  ];
-
-  const rows = [
-    {
-      id: 1,
-      invoice_id: "INV12345",
-      client_name: "John Doe",
-      client_designation: "Manager",
-      client_mobile: "1234567890",
-      client_ptcl_uan: "021-1234567",
-      client_email: "john@example.com",
-      client_dob: "1990-01-01",
-      client_company_name: "ABC Corp",
-      policy_company_name: "XYZ Insurance",
-      policy_name: "Health Plus",
-      policy_no: "POL12345",
-      policy_issue_date: "2024-01-01",
-      policy_expired_date: "2025-01-01",
-      policy_gross_amount: 5000,
-      policy_net_amount: 4500,
-      policy_payment_mode: "Credit Card",
-      policy_payment_invoice_attachment: "invoice123.pdf",
-      partner_agent_employment_code: "EMP98765",
-      partner_agent_name: "Jane Smith",
-      payment_status: "Paid",
-    },
-    {
-      id: 2,
-      invoice_id: "INV12345",
-      client_name: "John Doe",
-      client_designation: "Manager",
-      client_mobile: "1234567890",
-      client_ptcl_uan: "021-1234567",
-      client_email: "john@example.com",
-      client_dob: "1990-01-01",
-      client_company_name: "ABC Corp",
-      policy_company_name: "XYZ Insurance",
-      policy_name: "Health Plus",
-      policy_no: "POL12345",
-      policy_issue_date: "2024-01-01",
-      policy_expired_date: "2025-01-01",
-      policy_gross_amount: 5000,
-      policy_net_amount: 4500,
-      policy_payment_mode: "Credit Card",
-      policy_payment_invoice_attachment: "invoice123.pdf",
-      partner_agent_employment_code: "EMP98765",
-      partner_agent_name: "Jane Smith",
-      payment_status: "Unpaid",
-    },
-    {
-      id: 3,
-      invoice_id: "INV12345",
-      client_name: "John Doe",
-      client_designation: "Manager",
-      client_mobile: "1234567890",
-      client_ptcl_uan: "021-1234567",
-      client_email: "john@example.com",
-      client_dob: "1990-01-01",
-      client_company_name: "ABC Corp",
-      policy_company_name: "XYZ Insurance",
-      policy_name: "Health Plus",
-      policy_no: "POL12345",
-      policy_issue_date: "2024-01-01",
-      policy_expired_date: "2025-01-01",
-      policy_gross_amount: 5000,
-      policy_net_amount: 4500,
-      policy_payment_mode: "Credit Card",
-      policy_payment_invoice_attachment: "invoice123.pdf",
-      partner_agent_employment_code: "EMP98765",
-      partner_agent_name: "Jane Smith",
-      payment_status: "Paid",
-    },
-    // Add more rows as needed
   ];
 
   // marginTop: {sm:"1rem", xs:'3.5rem'}, maxWidth: { xs: "350px", sm: "1150px"}
@@ -214,27 +143,26 @@ export const MyDashboard = () => {
         </Box>
         <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
-          </Grid> */}
             <Grid item xs={12}>
               <Box sx={{ height: 400, width: "100%" }}>
+              <h1 className="text-3xl font-bold text-center mb-2">Paid</h1>
                 <DataGrid
-                  rows={userList}
+                  rows={userList?.filter((el)=>el.payment_status==="Paid")}
+                  rowHeight={38}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  disableSelectionOnClick
+                  experimentalFeatures={{ newEditingApi: false }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ height: 400, width: "100%" }}>
+                <h1 className="text-3xl font-bold text-center mb-2 mt-6">Pending</h1>
+                <DataGrid
+                  rows={userList?.filter((el)=>el.payment_status==="Pending")}
                   rowHeight={38}
                   columns={columns}
                   pageSize={5}

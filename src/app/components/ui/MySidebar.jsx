@@ -5,7 +5,7 @@ const MySidebar = (props) => (
   <Sidebar
       sx={{
           "& .RaSidebar-fixed": {
-              backgroundColor: "gray",
+              backgroundColor: "transparent",
           },
       }}
       {...props}

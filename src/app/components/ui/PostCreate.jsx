@@ -1,14 +1,82 @@
+import {
+  Create,
+  SimpleForm,
+  TextInput,
+  DateInput,
+  required,
+  useCreate,
+} from "react-admin";
 
-import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
-// import RichTextInput from 'ra-input-rich-text';
+export const PostCreate = () => {
+  const [create] = useCreate();
+  const totalInvoice = localStorage.getItem("total-invoice");
+  console.log(totalInvoice);
+  // Function to generate the invoice ID
+  const generateInvoiceId = (currentInvoicesCount) => {
+    const date = new Date();
+    const year = date.getFullYear().toString().slice(-2); // Last two digits of the year
+    const month = `0${date.getMonth() + 1}`.slice(-2); // Two-digit month (e.g., 01, 02, ... 12)
+    const invoiceNumber = `000000${currentInvoicesCount + 1}`.slice(-7); // 7 digit invoice number
 
-export const PostCreate = () => (
+    return `INVC-${year}${month}-${invoiceNumber}`;
+  };
+
+  const postSave = (data) => {
+    const currentInvoicesCount = parseInt(totalInvoice);
+    const invoiceData = {
+      ...data,
+      invoice_id: generateInvoiceId(currentInvoicesCount),
+    };
+    console.log(invoiceData);
+
+    // Create the post with the new invoice ID
+    create("salesInvoice", { data: invoiceData });
+  };
+
+  return (
     <Create>
-        <SimpleForm>
-            <TextInput source="title" validate={[required()]} />
-            <TextInput source="teaser" multiline={true} label="Short description" />
-            {/* <RichTextInput source="body" /> */}
-            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
-        </SimpleForm>
+      <SimpleForm onSubmit={postSave}>
+        <TextInput source="client_company_name" validate={[required()]} />
+        <TextInput source="client_designation" validate={[required()]} />
+        <TextInput source="client_dob" validate={[required()]} />
+        <TextInput source="client_email" validate={[required()]} />
+        <TextInput source="client_mobile" validate={[required()]} />
+        <TextInput source="client_name" validate={[required()]} />
+        <TextInput source="client_ptcl_uan" validate={[required()]} />
+        <TextInput source="partner_agent_name" validate={[required()]} />
+        <TextInput
+          source="payment_status"
+          multiline={true}
+          label="payment Status"
+        />
+        <TextInput source="policy_company_name" validate={[required()]} />
+        <DateInput
+          label="Policy expiry date"
+          source="policy_expired_date"
+          defaultValue={new Date()}
+        />
+        <TextInput source="policy_gross_amount" validate={[required()]} />
+        <DateInput
+          label="Policy expiry date"
+          source="policy_issue_date"
+          defaultValue={new Date()}
+        />
+        <TextInput source="policy_name" validate={[required()]} />
+        <TextInput source="policy_net_amount" validate={[required()]} />
+        <TextInput source="policy_no" validate={[required()]} />
+        <TextInput source="partner_agent_employment_code" validate={[required()]} />
+        <TextInput
+          source="policy_payment_invoice_attachment"
+          validate={[required()]}
+        />
+        <TextInput
+          source="policy_payment_mode"
+          multiline={true}
+          label="policy_payment_mode"
+          validate={[required()]}
+        />
+        {/* <RichTextInput source="body" /> */}
+      </SimpleForm>
     </Create>
-);
+  );
+};

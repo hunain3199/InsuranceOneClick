@@ -17,7 +17,9 @@ import InvoiceList from "./ui/InvoiceList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+
 const token = localStorage.getItem("token");
+console.log(token);
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -53,8 +55,8 @@ const customDataProvider = (apiUrl, httpClient) => {
           // Log the response data and total to see where they are coming from
           console.log("API Response data:", data); // Logs the data array
           console.log("API Response total:", total); // Logs the total number of records
-
-          const mappedData = data?.data?.map((item) => ({
+          localStorage.setItem('total-invoice',total)
+          const mappedData = data?.map((item) => ({
             ...item,
             id: item?.invoice_id,
           }));
@@ -81,8 +83,6 @@ const dataProvider = customDataProvider(
 // console.log(dataProvider);
 
 const AdminApp = () => {
-  
-
   return (
     <Admin
       dataProvider={dataProvider}
@@ -91,7 +91,7 @@ const AdminApp = () => {
       theme={radiantLightTheme}
       darkTheme={radiantDarkTheme}
     >
-      <Resource name="getInvoices" list={ListGuesser} icon={ChatBubbleIcon} />
+      <Resource name="getInvoices" list={ListGuesser} create={PostCreate} icon={ChatBubbleIcon} />
     </Admin>
   );
 };
