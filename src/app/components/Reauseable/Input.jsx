@@ -3,10 +3,10 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField, FormHelperText } from "@mui/material";
 
-const Input = ({ label, type, name }) => {
+const Input = ({ label, type, name,func,val }) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext();
 
   return (
@@ -16,6 +16,8 @@ const Input = ({ label, type, name }) => {
         type={type}
         {...register(name)}
         sx={{ width: "100%" }}
+        onChange={func}
+        value={val}
       />
       <FormHelperText error>{errors[name]?.message}</FormHelperText>
     </div>
