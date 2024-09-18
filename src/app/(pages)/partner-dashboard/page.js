@@ -1,7 +1,8 @@
 import react from "react";
 import dynamic from "next/dynamic";
 
-import AdminApp from "../../components/AdminApp"
+const AdminApp = dynamic(() => import("../../components/AdminApp"), { ssr: false });
+
 
 
 const Page = () => (
