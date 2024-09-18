@@ -1,11 +1,13 @@
+'use client'
 import React from "react";
 import InsuranceContent from "../../../../../components/Reauseable/InsuranceContent";
 import travel from "@public/assets/insurance/travel2.png";
-import TravelForm from "../../../../../components/Reauseable/TravelForm"
+import TravelForm from "../../../../../components/Reauseable/TravelForm";
 const page = () => {
   return (
     <>
-      <div className="  px-[50px] grid grid-cols-1  md:grid-cols-1 lg:grid-cols-3 py-[50px] gap-[30px] lg:gap-[30px] ">
+      {" "}
+      <div className=" px-5 mx-auto  md:px-[50px] w-2/3 grid grid-cols-1  md:grid-cols-1 lg:grid-cols-3 md:py-[50px] md:gap-[30px] lg:gap-[30px] ">
         <div className=" lg:col-span-2 ">
           <InsuranceContent
             src={travel}
@@ -17,10 +19,9 @@ const page = () => {
             }
           />
         </div>
-        <div>
-          <TravelForm/>
+        <div className=" ">
+          <TravelForm />
         </div>
-        
       </div>
     </>
   );

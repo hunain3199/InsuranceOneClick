@@ -1,6 +1,6 @@
 import React from "react";
 import InsuranceContent from "../../../../../components/Reauseable/InsuranceContent";
-import Form from "../../../../../components/insurance/Auto/Form";
+import {HealthForm} from "@/app/components/Reauseable/healthform";
 import health from "@public/assets/insurance/health.png";
 
 const page = () => {
@@ -18,7 +18,7 @@ const page = () => {
             }
           />
         </div>
-        <Form />
+        <HealthForm />
       </div>
     </>
   );

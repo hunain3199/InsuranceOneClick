@@ -5,6 +5,7 @@ import HeroMain from "../../components/ui/HeroMain";
 import InsurancePlan from "../../components/ui/InsurancePlan";
 import { useEffect } from "react";
 import axios from "axios";
+import { Toaster } from "react-hot-toast"
 
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
       <ConceptualSec />
       <Cards />
       <InsurancePlan />
+      <Toaster/>
     </>
   );
 }
