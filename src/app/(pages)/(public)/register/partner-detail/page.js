@@ -61,7 +61,7 @@ const Page = () => {
                 partner_father_name: partner_father_name.current.value,
             };
 
-            const response = await axios.post("https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-datail", partnerData,
+            const response = await axios.post("https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-detail", partnerData,
             { withCredentials: true }
         );
             console.log("partner-info response: ", response);

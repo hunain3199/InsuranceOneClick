@@ -24,7 +24,7 @@ export const MyDashboard = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8080/api/v1/partner/getInvoices", {
+      .get("https://oneclick-server-x09s.onrender.com/api/v1/partner/getInvoices", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ export const MyDashboard = () => {
 
   const rows = [
     {
-      id:1,
+      id: 1,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -111,7 +111,7 @@ export const MyDashboard = () => {
       payment_status: "Paid",
     },
     {
-      id:2,
+      id: 2,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -134,7 +134,7 @@ export const MyDashboard = () => {
       payment_status: "Unpaid",
     },
     {
-      id:3,
+      id: 3,
       invoice_id: "INV12345",
       client_name: "John Doe",
       client_designation: "Manager",
@@ -198,23 +198,23 @@ export const MyDashboard = () => {
               </Card>
             </Grid>
 
-          <Grid item xs={12} sm={4}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  TOTAL
-                </Typography>
-                <Typography variant="h5" component="div">
-                  ${userList?.length}
-                </Typography>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} sm={4}>
+              <Card elevation={3}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    TOTAL
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    ${userList?.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
-        <Grid container spacing={2}>
-          {/* <Grid item xs={12} sm={6}>
+        </Box>
+        <Box sx={{ flexGrow: 1, marginTop: "2rem" }}>
+          <Grid container spacing={2}>
+            {/* <Grid item xs={12} sm={6}>
             <Card elevation={3}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -231,22 +231,23 @@ export const MyDashboard = () => {
               </CardActions>
             </Card>
           </Grid> */}
-          <Grid item xs={12}>
-            <Box sx={{ height: 400, width: "100%" }}>
-              <DataGrid
-                rows={userList}
-                rowHeight={38}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-                disableSelectionOnClick
-                experimentalFeatures={{ newEditingApi: false }}
-              />
-            </Box>
+            <Grid item xs={12}>
+              <Box sx={{ height: 400, width: "100%" }}>
+                <DataGrid
+                  rows={userList}
+                  rowHeight={38}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  disableSelectionOnClick
+                  experimentalFeatures={{ newEditingApi: false }}
+                />
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </div>
     </Container>
   );
 };
