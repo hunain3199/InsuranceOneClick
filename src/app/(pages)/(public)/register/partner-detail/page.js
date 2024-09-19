@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { AuthContext } from '@/app/store/Context';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { fromError } from 'zod-validation-error';
 import emptyProfilePic from '@public/assets/BlankProfile/img.png';
 
@@ -29,10 +29,7 @@ const formSchema = z.object({
   partner_city: z.string().min(1, 'City is required.'),
   partner_cnic_number: z
     .string()
-    .regex(
-      /^\d{5}-\d{7}-\d{1}$/,
-      'Please enter a valid CNIC number in the format 4****-*******-*.'
-    ),
+    .regex(/^\d{13}$/, 'Please enter a valid 13-digit CNIC number.'),
   partner_cnic_expiry_date: z
     .string()
     .min(1, 'CNIC Expiry Date is required.')
@@ -44,10 +41,7 @@ const formSchema = z.object({
   partner_blood_cnic_number: z
     .string()
     .min(1, 'Blood CNIC Number is required.')
-    .regex(
-      /^\d{5}-\d{7}-\d{1}$/,
-      'Please enter a valid CNIC number in the format 4****-*******-*.'
-    ),
+    .regex(/^\d{13}$/, 'Please enter a valid 13-digit CNIC number.'),
   partner_blood_relation: z.string().min(1, 'Blood Relation is required.'),
   partner_bank_account: z.string().min(1, 'Bank Account is required.'),
 });
@@ -139,12 +133,19 @@ const Page = () => {
     try {
       formSchema.parse(formData);
     } catch (error) {
-      const validationError = fromError(error);
-      console.log('Huzefa');
-      console.log(validationError.toString());
-      setErrors(validationError.errors);
-      setLoading(false);
-      return; // Stop execution if validation fails
+      if (error instanceof ZodError) {
+        const errors = {};
+
+        error.issues.forEach((issue) => {
+          errors[issue.path[0]] = issue.message; // Map the error to the field name
+        });
+
+        console.log('Errors:', errors); // Output the errors
+        setErrors(errors); // Set the errors to state
+        setLoading(false);
+      } else {
+        console.error('Unexpected error', error);
+      }
     }
 
     // Image handling
@@ -171,13 +172,8 @@ const Page = () => {
     // Sending the request
     try {
       const response = await axios.post(
-<<<<<<< Updated upstream
         'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-datail',
-        formData,
-=======
-        'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-detail',
         formDataToSend,
->>>>>>> Stashed changes
         {
           withCredentials: true,
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -274,9 +270,9 @@ const Page = () => {
                     // defaultValue={'XYZ'}
                     disabled
                   />
-                  {errors.partner_cnic_name && (
+                  {errors?.partner_cnic_name && (
                     <span className="text-red-600">
-                      {errors.partner_cnic_name}
+                      {errors?.partner_cnic_name}
                     </span>
                   )}
                 </div>
@@ -295,9 +291,9 @@ const Page = () => {
                     id="father-name"
                     ref={partner_father_name}
                   />
-                  {errors.partner_father_name && (
+                  {errors?.partner_father_name && (
                     <span className="text-red-600">
-                      {errors.partner_father_name}
+                      {errors?.partner_father_name}
                     </span>
                   )}
                 </div>
@@ -318,9 +314,9 @@ const Page = () => {
                     id="number"
                     ref={partner_mobile}
                   />
-                  {errors.partner_mobile && (
+                  {errors?.partner_mobile && (
                     <span className="text-red-600">
-                      {errors.partner_mobile}
+                      {errors?.partner_mobile}
                     </span>
                   )}
                 </div>
@@ -342,8 +338,10 @@ const Page = () => {
                     // defaultValue={'XYZ@gmail.com'}
                     disabled
                   />
-                  {errors.partner_email && (
-                    <span className="text-red-600">{errors.partner_email}</span>
+                  {errors?.partner_email && (
+                    <span className="text-red-600">
+                      {errors?.partner_email}
+                    </span>
                   )}
                 </div>
               </div>
@@ -362,8 +360,8 @@ const Page = () => {
                     id="date"
                     ref={partner_dob}
                   />
-                  {errors.partner_dob && (
-                    <span className="text-red-600">{errors.partner_dob}</span>
+                  {errors?.partner_dob && (
+                    <span className="text-red-600">{errors?.partner_dob}</span>
                   )}
                 </div>
                 <div className="mb-0 md:mb-6">
@@ -381,6 +379,11 @@ const Page = () => {
                     id="status"
                     ref={partner_status}
                   />
+                  {errors?.partner_status && (
+                    <span className="text-red-600">
+                      {errors?.partner_status}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -399,6 +402,9 @@ const Page = () => {
                     id="city"
                     ref={partner_city}
                   />
+                  {errors?.partner_city && (
+                    <span className="text-red-600">{errors?.partner_city}</span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -415,6 +421,11 @@ const Page = () => {
                     id="address"
                     ref={partner_home_address}
                   />
+                  {errors?.partner_home_address && (
+                    <span className="text-red-600">
+                      {errors?.partner_home_address}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -428,11 +439,16 @@ const Page = () => {
                   <input
                     className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
                     required
-                    placeholder="4****-*******-*"
-                    type="text"
+                    placeholder="CNIC Number"
+                    type="number"
                     id="cnic-number"
                     ref={partner_cnic_number}
                   />
+                  {errors?.partner_cnic_name && (
+                    <span className="text-red-600">
+                      {errors?.partner_cnic_name}
+                    </span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -448,6 +464,11 @@ const Page = () => {
                     id="cnic-expiry"
                     ref={partner_cnic_expiry_date}
                   />
+                  {errors?.partner_cnic_expiry_date && (
+                    <span className="text-red-600">
+                      {errors?.partner_cnic_expiry_date}
+                    </span>
+                  )}
                 </div>
               </div>
               <hr className="my-6" />
@@ -470,6 +491,11 @@ const Page = () => {
                     id="relative-name"
                     ref={partner_blood_cnic_name}
                   />
+                  {errors?.partner_blood_cnic_name && (
+                    <span className="text-red-600">
+                      {errors?.partner_blood_cnic_name}
+                    </span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -481,11 +507,16 @@ const Page = () => {
                   <input
                     className="shadow-md border-0 text-sm block w-full h-[calc(1.5em+1.25rem+2px)] p-2.5 font-normal leading-6 text-[#8898aa] bg-white bg-clip-padding rounded-md focus:outline-none focus:text-black focus:shadow-lg focus:transition-shadow focus:duration-150"
                     required
-                    placeholder="4****-*******-*"
-                    type="text"
+                    placeholder="Relative's CNIC Number"
+                    type="number"
                     id="relative-number"
                     ref={partner_blood_cnic_number}
                   />
+                  {errors?.partner_blood_cnic_number && (
+                    <span className="text-red-600">
+                      {errors?.partner_blood_cnic_number}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -504,6 +535,11 @@ const Page = () => {
                     id="relation"
                     ref={partner_blood_relation}
                   />
+                  {errors?.partner_blood_relation && (
+                    <span className="text-red-600">
+                      {errors?.partner_blood_relation}
+                    </span>
+                  )}
                 </div>
               </div>
               <hr className="my-6" />
@@ -526,6 +562,11 @@ const Page = () => {
                     id="bank-account"
                     ref={partner_bank_account}
                   />
+                  {errors?.partner_bank_account && (
+                    <span className="text-red-600">
+                      {errors?.partner_bank_account}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

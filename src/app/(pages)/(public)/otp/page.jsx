@@ -58,6 +58,7 @@ const Page = () => {
       }
 
       toast.success('Verification successful!');
+      setInput({ number: '' });
       updateRegistrationStatus(true);
       router.replace('/register/partner-detail');
     } catch (error) {
