@@ -129,7 +129,7 @@ export default function TravelForm() {
   ];
   const [position, setPosition] = useState("bottom");
   return (
-    <Form {...form}>
+    <Form {...form} c>
       <h1  className="scroll-m-20 text-xl py-6 font-extrabold tracking-tight lg:text-3xl"> Travel Insurance Form</h1>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-2/3 space-y-6">
@@ -203,7 +203,7 @@ export default function TravelForm() {
 
               {/* Drop down Date selection */}
               <FormItem>
-                <DropdownMenu className={"w-full"}>
+                <DropdownMenu className={"w-2/3"}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" >
                       <div className="flex justify-between items-center">
@@ -211,7 +211,7 @@ export default function TravelForm() {
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent className="w-2/3">
                     {/* Start Date */}
                     <Popover>
                       <PopoverTrigger asChild>

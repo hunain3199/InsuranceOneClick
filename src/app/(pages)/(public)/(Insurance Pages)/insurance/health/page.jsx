@@ -6,7 +6,7 @@ import health from "@public/assets/insurance/health.png";
 const page = () => {
   return (
     <>
-      <div className="  px-[50px] grid grid-cols-1  md:grid-cols-1 lg:grid-cols-3 py-[50px] gap-[30px] lg:gap-[30px] ">
+      <div className="  px-[50px] w-full grid grid-cols-1  md:grid-cols-1 lg:grid-cols-3 py-[50px] gap-[30px] lg:gap-[30px] ">
         <div className=" lg:col-span-2 ">
           <InsuranceContent
             src={health}

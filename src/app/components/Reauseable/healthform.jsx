@@ -47,23 +47,16 @@ const FormSchema = z.object({
 export function HealthForm() {
   const [familyPlan, setFamilyPlan] = useState("");
   const [hospitalLimit, setHospitalLimit] = useState("");
+  const [btn, setbtn] = useState(true);
   const form = useForm({
     resolver: zodResolver(FormSchema),
   });
 
   function onSubmit(data) {
     console.log(data);
-    toast.success("Form submitted successfully");
-    
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    if(data) setbtn(false);
   }
+
   let sAge = [];
   for (let age = 18; age <= 100; age++) {
     sAge.push(`${age} Years`);
@@ -75,7 +68,7 @@ export function HealthForm() {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full space-y-6 px-5">
         {/* choose plan family */}
         <FormField
           control={form.control}
@@ -84,6 +77,7 @@ export function HealthForm() {
             <FormItem>
               <div className="grid grid-cols-2 lg:flex gap-3">
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -104,6 +98,7 @@ export function HealthForm() {
                 </Button>
 
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -124,6 +119,7 @@ export function HealthForm() {
                 </Button>
 
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -242,6 +238,7 @@ export function HealthForm() {
             <FormItem>
               <div className="grid grid-cols-2 lg:flex gap-3">
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -262,6 +259,7 @@ export function HealthForm() {
                 </Button>
 
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -282,6 +280,7 @@ export function HealthForm() {
                 </Button>
 
                 <Button
+                type="button"
                   onClick={() => {
                     // Ensure field.onChange is a function before calling it
                     if (field && typeof field.onChange === "function") {
@@ -306,8 +305,12 @@ export function HealthForm() {
           )}
         />
 
-        <Button type="submit" className={"w-full bg-hBlue  p-3 rounded hover:bg-blue hover:text-white outline-1 shadow-xl border hover:border-blue "}>Submit</Button>
-      </form>
+{
+  btn?
+  <Button type="submit" className={"w-full bg-hBlue  p-3 rounded hover:bg-blue hover:text-white outline-1 shadow-xl border hover:border-blue "}>Submit</Button>:
+  <Button type="submit" className={"bg-blue text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed" } disabled>Submit</Button>
+
+}      </form>
     </Form>
   );
 }
