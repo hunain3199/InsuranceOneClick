@@ -5,12 +5,18 @@ import {
   DateInput,
   required,
   useCreate,
+  useRedirect,
+  useNotify,
+  SelectInput, // Import the useRedirect hook
 } from "react-admin";
 
 export const PostCreate = () => {
   const [create] = useCreate();
+  const notify = useNotify();
+  const redirect = useRedirect(); // Initialize redirect hook
   const totalInvoice = localStorage.getItem("total-invoice");
   console.log(totalInvoice);
+
   // Function to generate the invoice ID
   const generateInvoiceId = (currentInvoicesCount) => {
     const date = new Date();
@@ -21,7 +27,7 @@ export const PostCreate = () => {
     return `INVC-${year}${month}-${invoiceNumber}`;
   };
 
-  const postSave = (data) => {
+  const postSave = async (data) => {
     const currentInvoicesCount = parseInt(totalInvoice);
     const invoiceData = {
       ...data,
@@ -30,11 +36,15 @@ export const PostCreate = () => {
     console.log(invoiceData);
 
     // Create the post with the new invoice ID
-    create("salesInvoice", { data: invoiceData });
+    await create("salesInvoice", { data: invoiceData });
+
+    // Redirect to the list after successful creation
+    notify(`Invoice Created`);
+    redirect('list', 'getInvoices');
   };
 
   return (
-    <Create>
+    <Create redirect="list">
       <SimpleForm onSubmit={postSave}>
         <TextInput source="client_company_name" validate={[required()]} />
         <TextInput source="client_designation" validate={[required()]} />
@@ -44,11 +54,15 @@ export const PostCreate = () => {
         <TextInput source="client_name" validate={[required()]} />
         <TextInput source="client_ptcl_uan" validate={[required()]} />
         <TextInput source="partner_agent_name" validate={[required()]} />
-        <TextInput
+        {/* <TextInput
           source="payment_status"
-          multiline={true}
+          multiline
           label="payment Status"
-        />
+        /> */}
+        <SelectInput source="payment_status" choices={[
+        { id: "Paid", name: "Paid" },
+        { id: "Pending", name: "Pending" },
+      ]} />
         <TextInput source="policy_company_name" validate={[required()]} />
         <DateInput
           label="Policy expiry date"
@@ -75,7 +89,6 @@ export const PostCreate = () => {
           label="policy_payment_mode"
           validate={[required()]}
         />
-        {/* <RichTextInput source="body" /> */}
       </SimpleForm>
     </Create>
   );
