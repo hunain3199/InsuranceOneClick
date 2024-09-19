@@ -1,42 +1,44 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import Image from "next/image";
-import { NextResponse } from "next/server";
-import React, { useContext, useEffect, useState } from "react";
-import Google from "@public/assets/google-icon.svg";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Error from "@public/assets/error.svg";
-import toast, { Toaster } from "react-hot-toast";
-import SideBg from "@public/assets/signUp-bg.svg";
-import Link from "next/link";
-import { AuthContext } from "@/app/store/Context";
+import axios from 'axios';
+import Image from 'next/image';
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
+import SideBg from '@public/assets/signUp-bg.svg'; // Keep it as SVG or change to a supported format
+import { AuthContext } from '@/app/store/Context';
 
 const Page = () => {
   const router = useRouter();
-  const [input, setInput] = useState({ number: "" });
-
+  const [input, setInput] = useState({ number: '' });
+  const [loading, setLoading] = useState(false);
   const { email, isRegistered, updateRegistrationStatus } =
     useContext(AuthContext);
-    useEffect(()=>{
-      if(isRegistered){
 
-        toast.success("OTP sent to your email");
-      }
-    },[isRegistered])
   useEffect(() => {
     if (!isRegistered) {
-      router.replace("/register");
+      router.replace('/register');
+    } else {
+      toast.success('OTP sent to your email');
     }
-  }, [isRegistered, router]);
+  }, [isRegistered]);
+
   const handleChange = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value }); // Update input with the new value
+    setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const [userError, setUserError] = useState("");
+  const [userError, setUserError] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Basic form validation
+    if (!input.number) {
+      toast.error('Please enter the verification code');
+      return;
+    }
+
+    setLoading(true); // Set loading state
 
     try {
       const dataToSend = {
@@ -44,49 +46,40 @@ const Page = () => {
         pinCode: input.number,
       };
 
-      console.log("Data to send:", dataToSend); // Log the data being sent
-
       const response = await axios.post(
         `https://oneclick-server-x09s.onrender.com/api/v1/auth/otpCode-complete`,
-
         dataToSend
       );
 
-      console.log("Response:", response); // Log the response data
-
       if (response.data.success === false) {
-        setUserError("error");
-        console.log("User already exists");
+        setUserError('Invalid verification code');
+        setLoading(false);
         return;
-      } else {
-        toast.success("success");
-        setInput({ email: "", password: "" });
       }
 
-      if (response.data.success === true) {
-        router.replace("/register/partner-detail");
-        updateRegistrationStatus(true);
-      }
+      toast.success('Verification successful!');
+      updateRegistrationStatus(true);
+      router.replace('/register/partner-detail');
     } catch (error) {
-      console.log("Error:", error); // Log the error for debugging
+      setUserError('An error occurred while verifying the code.');
       if (error.response) {
-        console.log("Response data:", error.response.data);
-        console.log("Response status:", error.response.status);
+        console.error('Error response:', error.response.data);
       }
-      toast.error("Registration Error");
+      toast.error('Verification failed');
+    } finally {
+      setLoading(false); // End loading state
     }
   };
 
   return (
     <>
-      <div className="grid items-center grid-cols-1 gap-4 mx-auto my-10 lg:grid-cols-2 lg:gap-8 lg:mx-28 ">
+      <div className="grid items-center grid-cols-1 gap-4 mx-auto my-10 lg:grid-cols-2 lg:gap-8 lg:mx-28">
         <Toaster />
         {/* Image-Section */}
         <div className="hidden lg:block xl:block">
-          <div>
-            <Image src={SideBg} alt="side_bg" />
-          </div>
+          <Image src={SideBg} alt="side_bg" />
         </div>
+
         {/* Form-Section */}
         <div className="mx-auto">
           <form
@@ -116,9 +109,16 @@ const Page = () => {
               />
             </div>
 
+            {userError && (
+              <div className="text-red-500 text-sm mt-2">{userError}</div> // Display error if any
+            )}
+
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md transition-all mt-3"
+              className={`w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md transition-all mt-3 ${
+                loading && 'opacity-50 cursor-not-allowed'
+              }`}
+              disabled={loading}
             >
               Submit
             </button>

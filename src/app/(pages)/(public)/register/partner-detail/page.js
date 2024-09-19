@@ -5,10 +5,58 @@ import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { AuthContext } from '@/app/store/Context';
+import { z } from 'zod';
+import { fromError } from 'zod-validation-error';
 import emptyProfilePic from '@public/assets/BlankProfile/img.png';
+
+const formSchema = z.object({
+  partner_cnic_name: z.string().min(1, 'Full Name is required.'),
+  partner_father_name: z.string().min(1, "Father's Name is required."),
+  partner_mobile: z
+    .string()
+    .regex(
+      /^03\d{9}$/,
+      'Please enter a valid 11-digit Pakistani mobile number starting with 03.'
+    ),
+  partner_email: z.string().email('Please enter a valid email address.'),
+  partner_dob: z
+    .string()
+    .min(1, 'Date of Birth is required.')
+    .refine((dob) => new Date(dob) <= new Date(), {
+      message: 'Date of Birth must not be greater than the current date.',
+    }),
+  partner_status: z.string().min(1, 'Marital Status is required.'),
+  partner_city: z.string().min(1, 'City is required.'),
+  partner_cnic_number: z
+    .string()
+    .regex(
+      /^\d{5}-\d{7}-\d{1}$/,
+      'Please enter a valid CNIC number in the format 4****-*******-*.'
+    ),
+  partner_cnic_expiry_date: z
+    .string()
+    .min(1, 'CNIC Expiry Date is required.')
+    .refine((expiryDate) => new Date(expiryDate) >= new Date(), {
+      message: 'Your CNIC is expired',
+    }),
+  partner_home_address: z.string().min(1, 'Home Address is required.'),
+  partner_blood_cnic_name: z.string().min(1, 'Blood CNIC Name is required.'),
+  partner_blood_cnic_number: z
+    .string()
+    .min(1, 'Blood CNIC Number is required.')
+    .regex(
+      /^\d{5}-\d{7}-\d{1}$/,
+      'Please enter a valid CNIC number in the format 4****-*******-*.'
+    ),
+  partner_blood_relation: z.string().min(1, 'Blood Relation is required.'),
+  partner_bank_account: z.string().min(1, 'Bank Account is required.'),
+});
 
 const Page = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
   const [selectedImage, setSelectedImage] = useState(emptyProfilePic);
 
   const profilePic = useRef(null);
@@ -32,29 +80,35 @@ const Page = () => {
 
   useEffect(() => {
     if (!isRegistered) {
-      // router.replace('/register');
+      router.replace('/register');
     }
+  }, [isRegistered, router]);
 
-    if (email && name) {
-      // partner_email.current.value = email;
-      partner_email.current.value = 'XYZ@gmail.com';
-      // partner_cnic_name.current.value = name;
-      partner_cnic_name.current.value = 'XYZ';
+  useEffect(() => {
+    if (email) {
+      partner_email.current.value = email;
     }
-  }, [email, name, isRegistered, router]);
+    if (name) {
+      partner_cnic_name.current.value = name;
+    }
+  }, [email, name]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    const maxSize = 5 * 1024 * 1024; // 2MB limit
 
-    // Check if the selected file is an image
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith('image/') && file.size <= maxSize) {
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
-      toast.error('Please select a valid image file');
+      toast.error(
+        file.size > maxSize
+          ? 'File size exceeds 5MB.'
+          : 'Please select a valid image file'
+      );
       e.target.value = '';
       setSelectedImage(emptyProfilePic);
     }
@@ -62,15 +116,44 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    // Collect form data into an object
+    const formData = {
+      partner_cnic_name: partner_cnic_name.current.value,
+      partner_father_name: partner_father_name.current.value,
+      partner_mobile: partner_mobile.current.value,
+      partner_email: partner_email.current.value,
+      partner_dob: partner_dob.current.value,
+      partner_status: partner_status.current.value,
+      partner_city: partner_city.current.value,
+      partner_cnic_number: partner_cnic_number.current.value,
+      partner_cnic_expiry_date: partner_cnic_expiry_date.current.value,
+      partner_home_address: partner_home_address.current.value,
+      partner_blood_cnic_name: partner_blood_cnic_name.current.value,
+      partner_blood_cnic_number: partner_blood_cnic_number.current.value,
+      partner_blood_relation: partner_blood_relation.current.value,
+      partner_bank_account: partner_bank_account.current.value,
+    };
 
-    const formData = new FormData();
+    // Validate form data against the schema
+    try {
+      formSchema.parse(formData);
+    } catch (error) {
+      const validationError = fromError(error);
+      console.log('Huzefa');
+      console.log(validationError.toString());
+      setErrors(validationError.errors);
+      setLoading(false);
+      return; // Stop execution if validation fails
+    }
 
     // Image handling
+    const formDataToSend = new FormData();
     if (profilePic.current.files[0]) {
       const blob = new Blob([profilePic.current.files[0]], {
         type: profilePic.current.files[0].type,
       });
-      formData.append(
+      formDataToSend.append(
         'partner_profile_picture',
         blob,
         profilePic.current.files[0].name
@@ -80,44 +163,21 @@ const Page = () => {
       return;
     }
 
-    // Collecting form data
-    formData.append('partner_cnic_name', partner_cnic_name.current.value);
-    formData.append('partner_father_name', partner_father_name.current.value);
-    formData.append('partner_mobile', partner_mobile.current.value);
-    formData.append('partner_email', partner_email.current.value);
-    formData.append('partner_dob', partner_dob.current.value);
-    formData.append('partner_status', partner_status.current.value);
-    formData.append('partner_city', partner_city.current.value);
-    formData.append('partner_cnic_number', partner_cnic_number.current.value);
-    formData.append(
-      'partner_cnic_expiry_date',
-      partner_cnic_expiry_date.current.value
-    );
-    formData.append('partner_home_address', partner_home_address.current.value);
-    formData.append(
-      'partner_blood_cnic_name',
-      partner_blood_cnic_name.current.value
-    );
-    formData.append(
-      'partner_blood_cnic_number',
-      partner_blood_cnic_number.current.value
-    );
-    formData.append(
-      'partner_blood_relation',
-      partner_blood_relation.current.value
-    );
-    formData.append('partner_bank_account', partner_bank_account.current.value);
-
-    // Log FormData content
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+    // Collect validated form data
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
     }
 
     // Sending the request
     try {
       const response = await axios.post(
+<<<<<<< Updated upstream
         'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-datail',
         formData,
+=======
+        'https://oneclick-server-x09s.onrender.com/api/v1/auth/partner-detail',
+        formDataToSend,
+>>>>>>> Stashed changes
         {
           withCredentials: true,
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -133,12 +193,12 @@ const Page = () => {
       }
     } catch (error) {
       if (error.response) {
-        console.error('Response data:', error.response.data);
         toast.error(error.response.data.message || 'Registration Error');
       } else {
-        console.error('Error:', error);
         toast.error('Registration Error');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -210,10 +270,15 @@ const Page = () => {
                     type="text"
                     id="name"
                     ref={partner_cnic_name}
-                    // defaultValue={name}
-                    defaultValue={'XYZ'}
+                    defaultValue={name}
+                    // defaultValue={'XYZ'}
                     disabled
                   />
+                  {errors.partner_cnic_name && (
+                    <span className="text-red-600">
+                      {errors.partner_cnic_name}
+                    </span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -230,6 +295,11 @@ const Page = () => {
                     id="father-name"
                     ref={partner_father_name}
                   />
+                  {errors.partner_father_name && (
+                    <span className="text-red-600">
+                      {errors.partner_father_name}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -248,6 +318,11 @@ const Page = () => {
                     id="number"
                     ref={partner_mobile}
                   />
+                  {errors.partner_mobile && (
+                    <span className="text-red-600">
+                      {errors.partner_mobile}
+                    </span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -263,10 +338,13 @@ const Page = () => {
                     type="email"
                     id="email"
                     ref={partner_email}
-                    // defaultValue={partner_email}
-                    defaultValue={'XYZ@gmail.com'}
+                    defaultValue={partner_email}
+                    // defaultValue={'XYZ@gmail.com'}
                     disabled
                   />
+                  {errors.partner_email && (
+                    <span className="text-red-600">{errors.partner_email}</span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -284,6 +362,9 @@ const Page = () => {
                     id="date"
                     ref={partner_dob}
                   />
+                  {errors.partner_dob && (
+                    <span className="text-red-600">{errors.partner_dob}</span>
+                  )}
                 </div>
                 <div className="mb-0 md:mb-6">
                   <label
@@ -450,7 +531,10 @@ const Page = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-500 text-white py-2 px-4 float-right rounded-lg hover:bg-green-800 transition ease-in-out duration-500 mt-5"
+              disabled={loading}
+              className={`bg-green-500 text-white py-2 px-4 float-right rounded-lg hover:bg-green-800 transition ease-in-out duration-500 mt-5 ${
+                loading && 'opacity-50 cursor-not-allowed'
+              }`}
             >
               Submit
             </button>
