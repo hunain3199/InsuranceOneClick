@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/components/Reauseable/TravelForm.jsx"  ],
+, "src/app/components/Reauseable/TravelForm.jsx", "src/app/components/Reauseable/healthform.jsx"  ],
   "exclude": ["node_modules"]
 }
 

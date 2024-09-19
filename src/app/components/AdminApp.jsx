@@ -56,9 +56,10 @@ const customDataProvider = (apiUrl, httpClient) => {
           console.log("API Response data:", data); // Logs the data array
           console.log("API Response total:", total); // Logs the total number of records
           localStorage.setItem('total-invoice',total)
-          const mappedData = data?.map((item) => ({
-            ...item,
-            id: item?.invoice_id,
+
+          const mappedData = data?.map(({ _id, invoice_id, ...rest }) => ({
+            id: invoice_id,
+            ...rest,
           }));
 
           return {
@@ -67,7 +68,7 @@ const customDataProvider = (apiUrl, httpClient) => {
           };
         })
         .catch((error) => {
-          console.error("Error in getList:", error); // Logs any error in the getList call
+          console.error("Error in getList:", error);
           throw error;
         });
     },

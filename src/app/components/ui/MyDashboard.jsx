@@ -14,9 +14,11 @@ import { useEffect, useState } from "react";
 import { useDataProvider } from "react-admin";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
+import RegisterInsuranceModal from './RegisterInsuranceModal'
 
 export const MyDashboard = () => {
   const [userList, setUserList] = useState();
+  const [open,setOpen]=useState(false)
   const dataProvider = useDataProvider();
 
   useEffect(() => {
@@ -88,9 +90,18 @@ export const MyDashboard = () => {
     { field: "payment_status", headerName: "Payment Status", width: 150 },
   ];
 
-  // marginTop: {sm:"1rem", xs:'3.5rem'}, maxWidth: { xs: "350px", sm: "1150px"}
+  const handleRegisterInsurance=()=>{
+    setOpen(true)
+    console.log(open)
+  }
 
   return (
+    <>
+    <RegisterInsuranceModal
+      open={open}
+      handleClose={()=>setOpen(false)}
+    />
+
     <Container
       sx={{
         display: "flex",
@@ -145,7 +156,10 @@ export const MyDashboard = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Box sx={{ height: 400, width: "100%" }}>
-              <h1 className="text-3xl font-bold text-center mb-2">Paid</h1>
+                <div className="flex justify-between">
+                <h1 className="text-3xl font-bold text-center mb-2">Paid</h1>
+                <Button sx={{margin:'2px'}} onClick={handleRegisterInsurance}>Register New Insurance</Button>
+                </div>
                 <DataGrid
                   rows={userList?.filter((el)=>el.payment_status==="Paid")}
                   rowHeight={38}
@@ -177,5 +191,6 @@ export const MyDashboard = () => {
         </Box>
       </div>
     </Container>
+    </>
   );
 };

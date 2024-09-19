@@ -129,10 +129,10 @@ export default function TravelForm() {
   ];
   const [position, setPosition] = useState("bottom");
   return (
-    <Form {...form}>
+    <Form {...form} c>
       <h1  className="scroll-m-20 text-xl py-6 font-extrabold tracking-tight lg:text-3xl"> Travel Insurance Form</h1>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-2/3 space-y-6">
         <FormField
           control={form.control}
           name="travel"
@@ -140,7 +140,7 @@ export default function TravelForm() {
             <>
               {/* Select Trips */}
               <FormItem>
-                <div className="flex space-x-4">
+                <div className="grid grid-cols-2 lg:flex gap-3">
                   <Button
                     onClick={() => handleTripButtonClick("single")}
                     className={`${
@@ -203,15 +203,15 @@ export default function TravelForm() {
 
               {/* Drop down Date selection */}
               <FormItem>
-                <DropdownMenu>
+                <DropdownMenu className={"w-2/3"}>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className={"w-full"}>
+                    <Button variant="outline" >
                       <div className="flex justify-between items-center">
                         Trip Start date &#8594; End &emsp; <ChevronDown />
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent className="w-2/3">
                     {/* Start Date */}
                     <Popover>
                       <PopoverTrigger asChild>
@@ -275,15 +275,15 @@ export default function TravelForm() {
 
               {/* Drop down Passenger selection */}
               <FormItem className={"w-full"}>
-                <DropdownMenu>
+                <DropdownMenu className={"w-full"}>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className={"w-full"}>
+                    <Button variant="outline" >
                       <div className="flex justify-between items-center">
                         Travelling Passenger &emsp; <ChevronDown />
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent >
                     <div className="flex space-x-4">
                       <Button
                         onClick={() => handlePassengerButtonClick("Family")}

@@ -20,6 +20,7 @@ module.exports = {
   		colors: {
 			
   			blue: '#0096FF',
+			hBlue:'#33B2FF',
   			yellow: '#ef9807',
   			customBlue: '#f2f7fa',
   			customRed: '#e3342f',

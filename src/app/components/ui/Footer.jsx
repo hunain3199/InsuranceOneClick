@@ -23,8 +23,8 @@ function Footer() {
   return (
     <>
       <Plains />
-      <hr className="h-px my-6 bg-gray border-none mx-44" />
-      <footer className="bg-image-two  mt-5">
+      <hr className="h-px my-6 bg-gray border-none lg:mx-44" />
+      <footer className="bg-image-two  mt-5 w-full">
         <div className="container p-6 mx-auto">
           <div className="lg:flex ">
             <div className="w-full -mx-6 lg:w-2/5 ">
@@ -105,44 +105,48 @@ function Footer() {
                 </div>
 
                 {/* Payment  */}
-                <div className="">
-                  <h3 className="text-gray-700 uppercase ">Payment Method</h3>
-
-                  <p className="block text-right text-sm text-black  hover:underline">
-                    <Image
-                      src={Visa}
-                      alt="Visa_Logo"
-                      className="w-24 flex justify-center"
-                    />
-                  </p>
-                  <p className="block text-sm text-gray-600  hover:underline">
-                    <Image
-                      src={MasterCard}
-                      alt="Master-Card"
-                      className="w-20 mx-2"
-                    />
-                  </p>
-                  <p className="block text-sm text-gray-600  hover:underline">
-                    <Image
-                      src={BankAlfalah}
-                      alt="Bank-Alf"
-                      className="w-20 mx-2"
-                    />
-                  </p>
-                  <p className=" mx-3 block text-sm text-gray-600  hover:underline">
-                    <Image src={Union} alt="Union_Pay" className="w-16" />
-                  </p>
+                <div>
+                  <h3 className="text-gray-700 uppercase  ">Payment Method</h3>
+                  <div className="flex md:flex-col ">
+                    <p className="block text-right text-sm text-black  hover:underline">
+                      <Image
+                        src={Visa}
+                        alt="Visa_Logo"
+                        className="w-24 flex justify-center"
+                      />
+                    </p>
+                    <p className="block text-sm text-gray-600  hover:underline">
+                      <Image
+                        src={MasterCard}
+                        alt="Master-Card"
+                        className="w-20 mx-2"
+                      />
+                    </p>
+                    <p className="block text-sm text-gray-600  hover:underline">
+                      <Image
+                        src={BankAlfalah}
+                        alt="Bank-Alf"
+                        className="w-20 mx-2"
+                      />
+                    </p>
+                    <p className=" mx-3 block text-sm text-gray-600  hover:underline">
+                      <Image src={Union} alt="Union_Pay" className="w-16" />
+                    </p>
+                  </div>
                 </div>
                 {/* Secured  */}
                 <div>
                   <h3 className="text-black uppercase ">Secured By</h3>
-                  <p className="block text-sm text-gray-600 mx-2">
-                    <Image src={SSL} alt="ssl_secure" />
-                  </p>
-                  <p className=" mx-2 block text-sm text-gray-600 ">
-                    <Image src={Norton} alt="norton_secure"  />
-                  </p>
+                  <div className="flex md:flex-col">
+                    <p className="block text-sm text-gray-600 mx-2">
+                      <Image src={SSL} alt="ssl_secure" />
+                    </p>
+                    <p className=" mx-2 block text-sm text-gray-600 ">
+                      <Image src={Norton} alt="norton_secure" />
+                    </p>
+                  </div>
                 </div>
+
                 {/* ContactUs  */}
                 <div>
                   <h3 className="text-black uppercase ">Contact Us</h3>
@@ -171,7 +175,7 @@ function Footer() {
 
           <hr className="h-px my-6  border-none dark:bg-gray-700" />
 
-          <div className="sm:flex sm:items-center sm:justify-between">
+          <div className="text-xs lg:text-base md:flex items-center justify-between">
             <p className=" text-black dark:text-gray-400">
               R-489 , Block 16, FB Area, Karachi Pakistan
             </p>
