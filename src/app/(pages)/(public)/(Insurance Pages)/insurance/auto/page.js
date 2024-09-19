@@ -10,7 +10,7 @@ const Page = () => {
         <div className="">
           <Content />
         </div>
-        <div className="">
+        <div >
         <AutoForm />
         </div>
         
