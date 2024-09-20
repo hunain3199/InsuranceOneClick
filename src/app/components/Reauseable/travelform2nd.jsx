@@ -173,7 +173,7 @@ function TravelForm2() {
                     <SelectValue placeholder="Countries traveling to" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="z-[99999]">
                   {tourCountries.map((country, index) => (
                     <SelectItem key={index} value={country}>
                       {country}
@@ -189,13 +189,13 @@ function TravelForm2() {
         {/* Date Selection */}
         <DropdownMenu className="w-full" >
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" >
+            <Button variant="outline" className="bg-transparent">
               <div className="flex justify-between items-center">
                 select Date start-end &emsp; <ChevronDown />
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full">
+          <DropdownMenuContent className="w-full z-[99999]">
 
             {/* start date selection */}
             <FormField
@@ -204,13 +204,14 @@ function TravelForm2() {
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Start Date</FormLabel>
-                  <Popover>
+                  <Popover className="z-[99999] ">
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
+
                           variant="outline"
                           className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
+                            "w-[240px] pl-3 text-left font-normal ",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -219,11 +220,11 @@ function TravelForm2() {
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50 " />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 z-[99999]" align="start">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -247,7 +248,7 @@ function TravelForm2() {
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>End Date</FormLabel>
-                  <Popover>
+                  <Popover className="z-[99999]">
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -263,11 +264,11 @@ function TravelForm2() {
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50 " />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 z-[99999]" align="start">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -289,13 +290,13 @@ function TravelForm2() {
         {/* drop down passenger selection */}
         <DropdownMenu className="w-full" >
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" >
+            <Button variant="outline" className="  bg-transparent">
               <div className="flex justify-between items-center">
                 select type of passenger &emsp; <ChevronDown />
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full">
+          <DropdownMenuContent className="w-full z-[99999] ">
 
            
             <FormField
@@ -303,7 +304,7 @@ function TravelForm2() {
           name="passenger"
           render={({ field }) => (
             <FormItem>
-              <div className="grid grid-cols-3 mx-auto gap-x-5 px-2 ">
+              <div className="grid grid-cols-2 mx-auto gap-x-5 px-2 ">
                 <Button
                 type="button"
                   onClick={() => {
