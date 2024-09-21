@@ -110,7 +110,7 @@ const RegisterInsuranceModal = ({ open, handleClose }) => {
       onClose={handleClose}
     >
       <DialogTitle className="mx-auto text-center font-bold text-3xl">
-        {step === 1 ? "Select Category" : step === 2 ? "Travel Insurance Form" : "Payment Methods"}
+        {step === 1 ? "Select Category" : step === 2 ? `${selectedCategory} Insurance Form` : "Payment Methods"}
       </DialogTitle>
       <DialogContent dividers>
         {step === 1 && (
