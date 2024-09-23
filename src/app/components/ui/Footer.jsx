@@ -1,171 +1,141 @@
-import Image from "next/image";
-import React from "react";
-import Link from "next/link";
-import "@/app/globals.css";
+import Image from 'next/image';
+import React from 'react';
+import Link from 'next/link';
+import '@/app/globals.css';
 import {
   Facebook,
   Instagram,
   LinkedIn,
   Twitter,
   WhatsApp,
-} from "@mui/icons-material";
-import BankAlfalah from "@public/assets/PaymentIcon/bankalfalah.svg";
-import MasterCard from "@public/assets/PaymentIcon/master-card.svg";
-import Union from "@public/assets/PaymentIcon/unionpay.svg";
-import Visa from "@public/assets/PaymentIcon/visa-logo.svg";
-import Logo from "@public/assets/Logo/main-logo.svg";
-import Secp from "@public/assets/Logo/secp.svg";
-import SSL from "@public/assets/PaymentIcon/ssl.svg";
-import Norton from "@public/assets/PaymentIcon/norton.svg";
-import "@/app/globals.css";
-import Plains from "./Plain";
+} from '@mui/icons-material';
+import BankAlfalah from '@public/assets/PaymentIcon/bankalfalah.svg';
+import MasterCard from '@public/assets/PaymentIcon/master-card.svg';
+import Union from '@public/assets/PaymentIcon/unionpay.svg';
+import Visa from '@public/assets/PaymentIcon/visa-logo.svg';
+import Logo from '@public/assets/Logo/main-logo.svg';
+import Secp from '@public/assets/Logo/secp.svg';
+import SSL from '@public/assets/PaymentIcon/ssl.svg';
+import Norton from '@public/assets/PaymentIcon/norton.svg';
+import '@/app/globals.css';
+import Plains from './Plain';
+
 function Footer() {
   return (
     <>
       <Plains />
-      <hr className="h-px my-6 bg-gray border-none lg:mx-44" />
-      <footer className="bg-image-two  mt-5 w-full">
-        <div className="container p-6 mx-auto">
-          <div className="lg:flex ">
-            <div className="w-full -mx-6 lg:w-2/5 ">
-              <div className="px-6 ">
-                <Link href={"/"}>
-                  <Image src={Logo} className="w-28" alt="Logo" />
+      <footer className="p-5 bg-image-two">
+        <div className="my-0 mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row flex-wrap justify-between gap-5">
+            <div className="flex-1 lg:w-1/3 lg:flex-none">
+              <Link href={'/'}>
+                <Image src={Logo} className="w-20 sm:w-28" alt="Logo" />
+              </Link>
+
+              <p className="mt-2.5 text-neutral-700">
+                OneClick Digital Offers customized insurance solutions to meet
+                your specific needs, whether it&apos;s for your home, car,
+                health, business, or life. We work with you to create a policy
+                that fits your unique situation.
+              </p>
+
+              <p className="mt-2.5 text-neutral-700 flex">
+                Seal of Registrar of Company
+                <span>
+                  <Image src={Secp} className="footer-secp" alt="SECP" />
+                </span>
+              </p>
+
+              <div>
+                <Link href={'/'}>
+                  <WhatsApp className="mr-2.5 text-2xl text-neutral-600" />
                 </Link>
-
-                <p className="max-w-sm leading-6 [&:not(:first-child)]:mt-6">
-                  OneClick Digital Offers customized insurance solutions to meet
-                  your specific needs, whether it&apos;s for your home, car,
-                  health, business, or life. We work with you to create a policy
-                  that fits your unique situation.
-                </p>
-
-                <p className="max-w-sm mt-2 text-black dark:text-gray-400 flex  items-center">
-                  Seal of Registrar of Company
-                  <span>
-                    <Image src={Secp} className="w-20" alt="SECP" />
-                  </span>
-                </p>
-
-                <div className="flex mt-6 -mx-2 items-center">
-                  <Link href={"/"}>
-                    <WhatsApp className="mx-2 text-gray-700 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" />
-                  </Link>
-                  <Link href={"/"}>
-                    <Facebook className="mx-2 text-gray-700 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" />
-                  </Link>
-                  <Link href={"/"}>
-                    <Instagram className="mx-2 text-gray-700 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" />
-                  </Link>
-                  <Link href={"/"}>
-                    <LinkedIn className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" />
-                  </Link>
-                  <Link href={"/"}>
-                    <Twitter className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" />
-                  </Link>
-                </div>
+                <Link href={'/'}>
+                  <Facebook className="mr-2.5 text-2xl text-neutral-600" />
+                </Link>
+                <Link href={'/'}>
+                  <Instagram className="mr-2.5 text-2xl text-neutral-600" />
+                </Link>
+                <Link href={'/'}>
+                  <LinkedIn className="mr-2.5 text-2xl text-neutral-600" />
+                </Link>
+                <Link href={'/'}>
+                  <Twitter className="mr-2.5 text-2xl text-neutral-600" />
+                </Link>
               </div>
             </div>
 
-            <div className="mt-6 lg:mt-0 lg:flex-1">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {/* Logo & Main  */}
+            <div className="flex-1">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div>
-                  <h3 className="text-black uppercase ">Quick Links</h3>
+                  <h3 className="font-bold mb-2.5 uppercase">Quick Links</h3>
                   <Link
-                    href={"/"}
-                    className="block mt-2 text-sm text-black hover:underline"
+                    href={'/'}
+                    className="block mt-1 text-gray-800 text-sm no-underline hover:underline"
                   >
                     Car Insurance
                   </Link>
                   <Link
-                    href={"/"}
-                    className="block mt-2 text-sm text-black  hover:underline"
+                    href={'/'}
+                    className=" block mt-1 text-gray-800 text-sm no-underline hover:underline"
                   >
                     Bike Insurance
                   </Link>
                   <Link
-                    href={"/"}
-                    className="block mt-2 text-sm text-black hover:underline"
+                    href={'/'}
+                    className=" block mt-1 text-gray-800 text-sm no-underline hover:underline"
                   >
                     Health Insurance
                   </Link>
                   <Link
-                    href={"/"}
-                    className="block mt-2 text-sm text-black  hover:underline"
+                    href={'/'}
+                    className=" block mt-1 text-gray-800 text-sm no-underline hover:underline"
                   >
                     Travel Insurance
                   </Link>
                   <Link
-                    href={"/"}
-                    className="block mt-2 text-sm text-black  hover:underline"
+                    href={'/'}
+                    className=" block mt-1 text-gray-800 text-sm no-underline hover:underline"
                   >
                     Life Insurance
                   </Link>
                 </div>
 
-                {/* Payment  */}
                 <div>
-                  <h3 className="text-gray-700 uppercase  ">Payment Method</h3>
-                  <div className="flex md:flex-col ">
-                    <p className="block text-right text-sm text-black  hover:underline">
-                      <Image
-                        src={Visa}
-                        alt="Visa_Logo"
-                        className="w-24 flex justify-center"
-                      />
-                    </p>
-                    <p className="block text-sm text-gray-600  hover:underline">
-                      <Image
-                        src={MasterCard}
-                        alt="Master-Card"
-                        className="w-20 mx-2"
-                      />
-                    </p>
-                    <p className="block text-sm text-gray-600  hover:underline">
-                      <Image
-                        src={BankAlfalah}
-                        alt="Bank-Alf"
-                        className="w-20 mx-2"
-                      />
-                    </p>
-                    <p className=" mx-3 block text-sm text-gray-600  hover:underline">
-                      <Image src={Union} alt="Union_Pay" className="w-16" />
-                    </p>
-                  </div>
-                </div>
-                {/* Secured  */}
-                <div>
-                  <h3 className="text-black uppercase ">Secured By</h3>
-                  <div className="flex md:flex-col">
-                    <p className="block text-sm text-gray-600 mx-2">
-                      <Image src={SSL} alt="ssl_secure" />
-                    </p>
-                    <p className=" mx-2 block text-sm text-gray-600 ">
-                      <Image src={Norton} alt="norton_secure" />
-                    </p>
+                  <h3 className="font-bold mb-2.5 uppercase">Payment Method</h3>
+                  <div className="flex sm:flex-wrap xl:flex-col">
+                    <Image src={Visa} alt="Visa_Logo" className="w-16 mt-1" />
+                    <Image
+                      src={MasterCard}
+                      alt="Master-Card"
+                      className="w-16 mt-1"
+                    />
+                    <Image
+                      src={BankAlfalah}
+                      alt="Bank-Alf"
+                      className="w-16 mt-1"
+                    />
+                    <Image src={Union} alt="Union_Pay" className="w-16 mt-1" />
                   </div>
                 </div>
 
-                {/* ContactUs  */}
                 <div>
-                  <h3 className="text-black uppercase ">Contact Us</h3>
-                  <p
-                    href="#"
-                    className="block mt-2 text-sm text-black  hover:underline"
-                  >
-                    +92 322 828 7111
-                  </p>
-                  <p
-                    href="#"
-                    className="block mt-2 text-sm text-black  hover:underline"
-                  >
-                    +92 315 396 6678
-                  </p>
-                  <p
-                    href="#"
-                    className="block mt-2 text-sm text-black d hover:underline"
-                  >
+                  <h3 className="font-bold mb-2.5 uppercase">Secured By</h3>
+                  <div className="flex sm:flex-wrap xl:flex-col">
+                    <Image src={SSL} alt="ssl_secure" className="w-16 mt-1" />
+                    <Image
+                      src={Norton}
+                      alt="norton_secure"
+                      className="w-16 mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-bold mb-2.5 uppercase">Contact Us</h3>
+                  <p className="mt-1 text-gray-800 text-sm">+92 322 828 7111</p>
+                  <p className="mt-1 text-gray-800 text-sm">+92 315 396 6678</p>
+                  <p className="mt-1 text-gray-800 text-sm">
                     info@theoneclickdigital.com
                   </p>
                 </div>
@@ -173,13 +143,13 @@ function Footer() {
             </div>
           </div>
 
-          <hr className="h-px my-6  border-none dark:bg-gray-700" />
+          <hr className="h-px opacity-0 my-3 mx-0" />
 
-          <div className="text-xs lg:text-base md:flex items-center justify-between">
-            <p className=" text-black dark:text-gray-400">
-              R-489 , Block 16, FB Area, Karachi Pakistan
+          <div>
+            <p className="text-xs sm:text-base text-neutral-700">
+              R-489, Block 16, FB Area, Karachi Pakistan
             </p>
-            <p className=" text-black dark:text-gray-400">
+            <p className="text-xs sm:text-base text-neutral-700">
               © OneClickDigital 2024 - All rights reserved
             </p>
           </div>

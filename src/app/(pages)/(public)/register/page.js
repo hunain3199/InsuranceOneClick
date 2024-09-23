@@ -1,16 +1,12 @@
-"use client";
-import Image from "next/image";
-import { SignIn } from "@clerk/nextjs";
-import axios from "axios";
-import React, { useState, useContext, useEffect } from "react";
-// import { signIn } from "next-auth/react";
-// import { GoogleLogin } from '@react-oauth/google';
-import { useRouter } from "next/navigation";
-import Error from "@public/assets/error.svg";
-import toast, { Toaster } from "react-hot-toast";
-import SideBg from "@public/assets/signUp-bg.svg";
-import Link from "next/link";
-import { AuthContext } from "@/app/store/Context";
+'use client';
+import Image from 'next/image';
+import { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
+import { AuthContext } from '@/app/store/Context';
+import SideBg from '@public/assets/signUp-bg.svg';
 
 function Register() {
   const {
@@ -20,16 +16,16 @@ function Register() {
     isRegistered,
     updateToken,
   } = useContext(AuthContext);
-  const [input, setInput] = useState({ name: "", email: "", password: "" });
+
+  const [input, setInput] = useState({ name: '', email: '', password: '' });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (isRegistered) {
-      router.replace("/otp");
-    } else {
-      router.replace("/register");
+      router.replace('/otp');
     }
-  }, [isRegistered, router]);
+  }, [isRegistered]);
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -37,16 +33,19 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const response = await axios.post(
-        "https://oneclick-server-x09s.onrender.com/api/v1/auth/register",
+        'https://oneclick-server-x09s.onrender.com/api/v1/auth/register',
         input
       );
 
-      console.log("this is my register response", response.data);
+      console.log('this is my register response', response.data);
       if (!response.data.success) {
         toast.error(response.data.message);
-        console.log("User registration error:", response.data.message);
+        console.log('User registration error:', response.data.message);
+        setLoading(false);
         return;
       }
 
@@ -54,35 +53,30 @@ function Register() {
       updateUserEmail(email);
       updatedUserName(name);
       updateRegistrationStatus(true);
-
-      toast.success("Registration successful!");
-      setInput({ name: "", email: "", password: "" });
-      // localStorage.setItem("token", response.data.token);
       updateToken(response.data.token);
+
+      toast.success('Registration successful!');
+      setInput({ name: '', email: '', password: '' });
+      setLoading(false);
+      router.replace('/otp');
     } catch (error) {
-      console.error("Error in registering the user:", error);
-      toast.error("Registration Error");
+      console.error('Error in registering the user:', error);
+      toast.error('Registration Error');
+      setLoading(false);
     }
   };
-  // function google(){
-  //   return (
-  //     <>
-  //     <Google />
-  //     </>
-  //   )
-  // }
 
   return (
     <>
-      <div className="grid items-center grid-cols-1 gap-4 mx-auto my-10 lg:grid-cols-2 lg:gap-8 lg:mx-28 ">
+      <div className="grid items-center grid-cols-1 gap-4 mx-auto my-10 lg:grid-cols-2 lg:gap-8 lg:mx-28">
         <Toaster />
-        {/* Image-Section */}
+
         <div className="hidden lg:block xl:block">
           <div>
-            <Image src={SideBg} alt="side_bg" />
+            <Image src={SideBg} alt="side_bg" loading="lazy" />
           </div>
         </div>
-        {/* Form-Section */}
+
         <div className="mx-auto">
           <form
             className="w-full p-8 bg-white border border-blue-400 rounded-lg shadow-lg py-7 md:w-96 lg:w-96"
@@ -91,6 +85,7 @@ function Register() {
             <h1 className="flex items-center justify-center font-sans text-2xl font-bold text-blue-500">
               PARTNER REGISTRATION
             </h1>
+
             <div className="mt-4 mb-4">
               <label
                 className="block pb-1 mx-2 text-sm text-gray-500"
@@ -106,8 +101,10 @@ function Register() {
                 type="text"
                 id="name"
                 name="name"
+                required
               />
             </div>
+
             <div className="mt-4 mb-4">
               <label
                 className="block pb-1 mx-2 text-sm text-gray-500"
@@ -123,8 +120,10 @@ function Register() {
                 type="email"
                 id="email"
                 name="email"
+                required
               />
             </div>
+
             <div>
               <label
                 className="block pb-1 mx-2 mt-2 text-sm text-gray-500"
@@ -140,18 +139,20 @@ function Register() {
                 type="password"
                 id="password"
                 name="password"
+                required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full p-2 mt-3 text-white transition-all bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] rounded-md hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200"
+              className={`w-full p-2 mt-3 text-white transition-all bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] rounded-md hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 ${
+                loading && 'opacity-50 cursor-not-allowed'
+              }`}
+              disabled={loading}
             >
               Register
             </button>
-            <button className="flex items-center justify-center w-full gap-3 p-2 mt-3 text-sm transition-all border rounded-md hover:bg-gradient-to-tr from-blue-600 via-blue-500 to-cyan-400 hover:bg-blue-700 hover:text-white">
-              hello
-            </button>
+
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
               <Link
