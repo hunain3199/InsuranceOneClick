@@ -4,9 +4,9 @@ import LabelIcon from "@mui/icons-material/Label";
 
 export const MyMenu = () => (
   <Menu>
-    <Menu.DashboardItem />
+    <Menu.DashboardItem/>
         <Menu.ResourceItem name="posts"/>
-        <Menu.ResourceItem name="getInvoices"/>
         <Menu.ResourceItem name="users" />
+        <Menu.Item to="/getInvoices" primaryText="Get Invoices" leftIcon={<LabelIcon />} />
   </Menu>
 );

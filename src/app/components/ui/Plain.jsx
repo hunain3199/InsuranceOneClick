@@ -11,13 +11,13 @@ import "@/app/globals.css";
 
 const Plains = () => {
   return (
-    <>
-      <div className="slider-container overflow-hidden  max-w-4xl m-auto mb-10 plain-bg ">
+    <> 
+      <div className="w-2/3 md:w-full slider-container overflow-hidden  max-w-4xl m-auto mb-10 plain-bg ">
         <div className="text-center mb-8">
           {/* <h1 className="text-blue-400 text-lg font-sans mb-3">
             Our Community
           </h1> */}
-          <h1 className="text-3xl font-bold text-neutral-500 font-sans uppercase">
+          <h1 className="text-xl lg:text-3xl font-bold text-neutral-500 font-sans uppercase">
             {" "}
             OUR PROUD PARTNERS
             

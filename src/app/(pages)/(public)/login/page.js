@@ -56,7 +56,7 @@ function Login() {
         updatedUserCnic(response.data.userId);
 
         // Store the token in localStorage
-        // localStorage.setItem("token", token);
+        localStorage.setItem("token", token);
         console.log("login tokem", token);
         updateToken(token);
         if (response.data.data.isAdmin === true) {

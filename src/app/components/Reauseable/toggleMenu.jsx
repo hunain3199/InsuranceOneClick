@@ -1,8 +1,17 @@
 "use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import DrawerLogo from "@public/assets/Logo/main-logo.svg";
 import Link from "next/link";
-import {Menu} from "lucide-react"
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import {
   Sheet,
@@ -28,16 +37,15 @@ export function ToggleNavbar() {
     setIsOpen(false);
   };
 
-  
   const dropsLink = [
     { href: "/insurance/auto", label: "Auto" },
     { href: "/insurance/bike", label: "Bike" },
     { href: "/insurance/commercial", label: "Commercial" },
-    { href: "/health", label: "Health" },
-    { href: "/family", label: "Family" },
-    { href: "/travel", label: "Travel" },
-    { href: "/life", label: "Life" },
-    { href: "/general", label: "General" },
+    { href: "/insurance/health", label: "Health" },
+    { href: "/insurance/family", label: "Family" },
+    { href: "/insurance/travel", label: "Travel" },
+    { href: "/insurance/life", label: "Life" },
+    { href: "/insurance/general", label: "General" },
   ];
   const navLinks = [
     { href: "/about", label: "About" },
@@ -46,20 +54,48 @@ export function ToggleNavbar() {
   ];
   return (
     <div className="grid grid-cols-2 gap-2">
-      <Sheet open={isOpen} onOpenChange={setIsOpen} >
-        <SheetTrigger><Menu color="white" /></SheetTrigger>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger>
+          <Menu color="white" />
+        </SheetTrigger>
         <SheetContent>
           <div className="flex flex-col justify-between h-screen bg-white border-e">
             <div className="">
-              <Image onClick={closeSheet}  src={DrawerLogo} alt="Logo" width={100} className="mx-5" />
+              <Image
+                onClick={closeSheet}
+                src={DrawerLogo}
+                alt="Logo"
+                width={100}
+                className="mx-5"
+              />
 
               <ul className="px-6 mt-6 space-y-4 font-sans font-semibold text-black text-md">
                 <li>
-                  <Link onClick={closeSheet} href={"/"} className="block hover:text-blue-500">
+                  <Link
+                    onClick={closeSheet}
+                    href={"/"}
+                    className="block hover:text-blue-500"
+                  >
                     Home
                   </Link>
                 </li>
-                <DropdownNavbar/>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex gap-2 lg:text-white text-black">
+                    Takaful & Insurance <ChevronDown />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel></DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+
+                    {dropsLink.map((drop, i) => (
+                      <>
+                        <Link href={drop.href} key={i} onClick={closeSheet}>
+                          <DropdownMenuItem>{drop.label}</DropdownMenuItem>
+                        </Link>
+                      </>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
                 {navLinks.map((links, i) => (
                   <>
@@ -67,7 +103,7 @@ export function ToggleNavbar() {
                       <Link
                         href={links.href}
                         className="block hover:text-blue-500"
-                        onClick={closeSheet} 
+                        onClick={closeSheet}
                       >
                         {links.label}
                       </Link>
@@ -75,6 +111,37 @@ export function ToggleNavbar() {
                   </>
                 ))}
               </ul>
+              <div className="flex flex-col py-7">
+                {true ? (
+                  <>
+                    <div className="flex flex-col gap-2 justify-center">
+                      <Link
+                        onClick={closeSheet}
+                        href={"/register"}
+                        className="inline-block rounded-md text-center text-xs line-clamp-1 lg:text-sm bg-blue px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-blue/50 text-white hover:text-black hover:outline-1 "
+                      >
+                        Partner&apos;s Register
+                      </Link>
+                      <Link
+                        onClick={closeSheet}
+                        href={"/login"}
+                        className="inline-block rounded-md text-center text-xs line-clamp-1 lg:text-sm  bg-blue px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue text-white hover:text-black hover:outline-1 "
+                      >
+                        Partner&apos;s Signin
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      signOut();
+                    }}
+                    className="inline-block rounded-md text-xs line-clamp-1 lg:text-sm  bg-blue px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue text-white hover:text-black hover:outline-1 "
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="sticky inset-x-0 bottom-0 mb-5 border-t border-gray-100">

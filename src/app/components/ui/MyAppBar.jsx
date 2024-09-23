@@ -1,44 +1,53 @@
 import { AppBar, UserMenu, useUserMenu } from "react-admin";
-import { Typography, Box, MenuItem} from "@mui/material";
+import {
+  Typography,
+  Box,
+  MenuItem,
+  ListItemText,
+} from "@mui/material";
 import DrawerLogo from "@public/assets/Logo/main-logo.svg";
 import Image from "next/image";
 import React from "react";
 
-// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const SettingsMenuItem = React.forwardRef((props, ref) => {
-  // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
   const { onClose } = useUserMenu();
   return (
     <>
-      <MenuItem
-        onClick={onClose}
-        ref={ref}
-        {...props}
-      >
-        Profile
+      <MenuItem onClick={onClose} ref={ref} {...props}>
+        <ListItemText>Profile</ListItemText>
       </MenuItem>
-      
-      <MenuItem
-        onClick={onClose}
-        ref={ref}
-        {...props}
-      >
-        Logout
+      <MenuItem onClick={onClose} ref={ref} {...props}>
+        <ListItemText>logout</ListItemText>
       </MenuItem>
     </>
   );
 });
 
-const MyAppBar = (props) => (
-  <AppBar
-    {...props}
-    userMenu={
+// Assign a display name to the component for debugging purposes
+SettingsMenuItem.displayName = "SettingsMenuItem";
+
+const CustomUserMenu = () => {
+  // const { identity } = useGetIdentity();
+
+  return (
+    <>
+      {/* Custom Avatar and Full Name */}
+      {/* {identity?.fullName && ( */}
       <UserMenu>
         <SettingsMenuItem />
       </UserMenu>
-    }
+      <span className="flex items-center justify-start pr-2 flex-shrink-0">Jofra Archer</span>
+      {/* )} */}
+    </>
+  );
+};
+
+const MyAppBar = (props) => (
+  <AppBar
+    {...props}
+    userMenu={<CustomUserMenu />}
     sx={{
-      boxShadow: 'none',
+      boxShadow: "none",
     }}
   >
     <Box display="flex" alignItems="center" width="100%">
@@ -55,7 +64,7 @@ const MyAppBar = (props) => (
         color="inherit"
         style={{ textAlign: "center", flex: 1 }}
       >
-        My Company Name
+        My
       </Typography>
     </Box>
   </AppBar>
