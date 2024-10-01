@@ -17,6 +17,7 @@ function Login() {
   const emailRef = useRef("");
   const partner_cnic_number = useRef("");
   const password = useRef("");
+  const [isLoading, setIsLoading] = useState(false);
   const { cnic, email, updatedUserCnic, updateToken } = useContext(AuthContext);
   const [authStatus, setAuthStatus] = useState("");
   const router = useRouter();
@@ -32,6 +33,7 @@ function Login() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const partnerData = {
         email: emailRef.current.value,
         userId: partner_cnic_number.current.value,
@@ -71,7 +73,8 @@ function Login() {
         password.current.value = "";
       }
     } catch (error) {
-      console.error("helloooo",error);
+      console.error("helloooo", error);
+      setIsLoading(false);
       toast.error("An error occurred. Please try again.");
     }
   };
@@ -165,16 +168,31 @@ function Login() {
               </Link>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md  transition-all mt-3"
-            >
-              Login
-            </button>
+            { isLoading ? (
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md  transition-all mt-3"
+                disabled
+              >
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+                </div>
+              </button>
+            ) : (
+              // Render the login button
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white p-2 rounded-md  transition-all mt-3"
+              >
+                Login
+              </button>
+            )
+              
+            }
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/" })}
-              className="flex items-center justify-center w-full gap-3 p-2 mt-3 text-sm transition-all border rounded-md hover:bg-gradient-to-tr from-blue-600 via-blue-500 to-cyan-400 hover:bg-blue-700 hover:text-white"
+              className="flex items-center justify-center w-full gap-3 p-2 mt-3 text-sm transition-all border rounded-md hover:bg-gradient-to-tr from-blue-600 via-blue-500 to-cyan-400 hover:bg-blue-700 "
             >
               <span>
                 <Image src={Google} alt="Google-icon" />

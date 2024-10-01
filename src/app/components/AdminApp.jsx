@@ -13,13 +13,17 @@ import { fetchUtils } from "react-admin";
 import { PostCreate } from "./ui/PostCreate";
 import BookIcon from "@mui/icons-material/Book";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import { useRouter } from "next/navigation";
 import InvoiceList from "./ui/InvoiceList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 const token = localStorage.getItem("token");
 console.log(token);
+
+if (!token) {
+  window.location.href = "/login";
+}
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -55,7 +59,7 @@ const customDataProvider = (apiUrl, httpClient) => {
           // Log the response data and total to see where they are coming from
           console.log("API Response data:", data); // Logs the data array
           console.log("API Response total:", total); // Logs the total number of records
-          localStorage.setItem('total-invoice',total)
+          localStorage.setItem("total-invoice", total);
 
           const mappedData = data?.map(({ _id, invoice_id, ...rest }) => ({
             id: invoice_id,
@@ -84,6 +88,10 @@ const dataProvider = customDataProvider(
 // console.log(dataProvider);
 
 const AdminApp = () => {
+  // const router = useRouter();
+
+
+
   return (
     <Admin
       dataProvider={dataProvider}
@@ -92,7 +100,12 @@ const AdminApp = () => {
       theme={radiantLightTheme}
       darkTheme={radiantDarkTheme}
     >
-      <Resource name="getInvoices" list={ListGuesser} create={PostCreate} icon={ChatBubbleIcon} />
+      <Resource
+        name="getInvoices"
+        list={ListGuesser}
+        create={PostCreate}
+        icon={ChatBubbleIcon}
+      />
     </Admin>
   );
 };

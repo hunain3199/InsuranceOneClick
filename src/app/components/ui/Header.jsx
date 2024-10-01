@@ -2,6 +2,7 @@
 // import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import "@/app/globals.css";
 import {
   Drawer,
@@ -32,8 +33,15 @@ function Header() {
   //   userName = userName.replace("@gmail.com", "");
   // }
 
+  const token = localStorage.getItem("token");
+
   const openDrawer = () => {
     setOpen("success");
+  };
+
+  const signOut = () => {
+    localStorage.removeItem("token");
+    window.location.reload()
   };
 
   const dropsLink = [
@@ -121,25 +129,9 @@ function Header() {
               </div>
 
               <div className="hidden sm:flex">
-                {true ? (
-                  <>
-                    <div className="flex gap-2">
-                      <Link
-                        href={"/register"}
-                        className="inline-block rounded-md text-xs line-clamp-1 lg:text-sm bg-white px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue hover:text-black hover:outline-1 "
-                      >
-                        Partner&apos;s Register
-                      </Link>
-                      <Link
-                        href={"/login"}
-                        className="inline-block rounded-md text-xs line-clamp-1 lg:text-sm bg-white px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue hover:text-black hover:outline-1 "
-                      >
-                        Partner&apos;s Signin
-                      </Link>
-                    </div>
-                  </>
-                ) : (
-                  <button
+                {token ? (
+                  <div className="flex gap-2">
+                     <button
                     onClick={() => {
                       signOut();
                     }}
@@ -147,6 +139,31 @@ function Header() {
                   >
                     Logout
                   </button>
+                  <Link
+                  href={"/partner-dashboard"}
+                    
+                    className="flex justify-center items-center gap-1 rounded-md text-xs line-clamp-1 lg:text-sm bg-white px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue hover:text-black hover:outline-1 "
+                  >
+                    Dashboard <ArrowUpRight />
+                  </Link>
+
+                  </div>
+                ) : (
+                 
+                  <div className="flex gap-2">
+                  <Link
+                    href={"/register"}
+                    className="inline-block rounded-md text-xs line-clamp-1 lg:text-sm bg-white px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue hover:text-black hover:outline-1 "
+                  >
+                    Partner&apos;s Register
+                  </Link>
+                  <Link
+                    href={"/login"}
+                    className="inline-block rounded-md text-xs line-clamp-1 lg:text-sm bg-white px-3 py-1.5 duration-200 lg:px-4 lg:py-2 font-medium  transition   focus:outline-none focus:ring hover:bg-lightBlue hover:text-black hover:outline-1 "
+                  >
+                    Partner&apos;s Signin
+                  </Link>
+                </div>
                 )}
               </div>
             </div>
